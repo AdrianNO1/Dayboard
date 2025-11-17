@@ -1,0 +1,19 @@
+<div
+	class="date-text-container"
+	[style.backgroundColor]="backgroundColor"
+	(contextmenu)="onRightClick($event)"
+>
+	<div class="date">{{ date | date: "dd.MM.yyyy" }}</div>
+	<div class="message">{{ message }}</div>
+</div>
+
+@if (contextMenuVisible) {
+	<div
+		class="context-menu"
+		[style.top]="contextMenuY + 'px'"
+		[style.left]="contextMenuX + 'px'"
+		(click)="onSnooze()"
+	>
+		Snooze
+	</div>
+}
