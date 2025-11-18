@@ -8,15 +8,13 @@ import { Card } from "../card/card";
 	styleUrl: "./card-group.scss",
 })
 export class CardGroup {
-	@Input() title: string = "Today";
-	@Input() cards: CardData[] = [
-		{ date: new Date(), text: "hello lorem iåsum something ioa jasdj oaij dija ji jsaid jaisojad jiasdj ihrugh ruigh rui ghuihurhg u" },
-		{ date: new Date(), text: "hello lorem iåsum something ioa jasdj oaij dija ji jsaid jaisojad jiasdj ihrugh ruigh rui ghuihurhg u" },
-		{ date: new Date(), text: "hello lorem iåsum something ioa jasdj oaij dija ji jsaid jaisojad jiasdj ihrugh ruigh rui ghuihurhg u" },
-		{ date: new Date(), text: "hello lorem iåsum something ioa jasdj oaij dija ji jsaid jaisojad jiasdj ihrugh ruigh rui ghuihurhg u" },
-		{ date: new Date(), text: "hello" },
-		{ date: new Date(), text: "hello" },
-		{ date: new Date(), text: "helloooooooooo" },
-		{ date: new Date(), text: "hello lorem iåsum something ioa jasdj oaij dija ji jsaid jaisojad jiasdj ihrugh ruigh rui ghuihurhg u" },
-	];
+	@Input() group?: CardGroupData
+
+	get title() {
+		return this.group?.title || ""
+	}
+
+	get cards() {
+		return this.group?.cardData || []
+	}
 }

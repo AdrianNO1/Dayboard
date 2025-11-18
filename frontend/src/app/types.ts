@@ -10,3 +10,12 @@ interface CardData {
 	date: Date;
 	type?: CardType;
 }
+
+interface CardGroupData {
+	cardData: CardData[];
+	title: string;
+}
+
+interface DashboardData {
+	cardData: CardData[];
+}

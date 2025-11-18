@@ -1,10 +1,10 @@
 import { Component, signal } from "@angular/core";
 import { RouterOutlet } from "@angular/router";
-import { CardGroup } from "./card-group/card-group";
+import { Dashboard } from "./dashboard/dashboard";
 
 @Component({
 	selector: "app-root",
-	imports: [RouterOutlet, CardGroup],
+	imports: [RouterOutlet, Dashboard],
 	templateUrl: "./app.html",
 	styleUrl: "./app.scss",
 })
