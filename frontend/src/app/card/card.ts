@@ -1,16 +1,26 @@
 import { Component, HostListener, Input } from "@angular/core";
-import { DatePipe } from "@angular/common";
 
 @Component({
 	selector: "app-card",
-	imports: [DatePipe],
+	imports: [],
 	templateUrl: "./card.html",
 	styleUrl: "./card.scss",
 })
 export class Card {
-	@Input() backgroundColor: string = "#2196f3";
-	date = new Date();
-	message = "Here is some example text below the date.";
+	@Input() data?: CardData;
+
+	get backgroundColor() {
+		return "#2196f3";
+	}
+
+	get title() {
+		if (this.data) {
+			return this.data.date.toLocaleDateString("no-NO");
+		}
+		return "";
+	}
+
+	constructor() {}
 
 	contextMenuVisible = false;
 	contextMenuX = 0;

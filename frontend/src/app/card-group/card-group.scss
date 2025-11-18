@@ -1,0 +1,15 @@
+.card-group-container {
+	.title {
+		font-size: 2rem;
+		font-weight: 600;
+	}
+
+	.card-group {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		justify-content: flex-start;
+		align-items: stretch;
+		padding: 0.5rem 0;
+	}
+}
