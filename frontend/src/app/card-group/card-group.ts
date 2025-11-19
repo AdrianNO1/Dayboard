@@ -8,13 +8,13 @@ import { Card } from "../card/card";
 	styleUrl: "./card-group.scss",
 })
 export class CardGroup {
-	@Input() group?: CardGroupData
+	@Input() group?: CardGroupData;
 
 	get title() {
-		return this.group?.title || ""
+		return this.group?.title || "";
 	}
 
 	get cards() {
-		return this.group?.cardData || []
+		return this.group?.cardData || [];
 	}
 }

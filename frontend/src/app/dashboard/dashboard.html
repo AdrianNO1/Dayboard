@@ -1,5 +1,16 @@
 <div class="dashboard-container">
+	<div class="header">
+		<button class="settings-button" (click)="openSettings()">
+			<mat-icon>settings</mat-icon>
+		</button>
+	</div>
 	@for (groupGroup of groupGroups; track groupGroup) {
 		<app-card-group [group]="groupGroup"></app-card-group>
 	}
 </div>
+
+@if (isSettingsOpen) {
+	<app-modal (onClose)="closeSettings()">
+		<app-settings></app-settings>
+	</app-modal>
+}
