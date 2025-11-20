@@ -1,1 +1,15 @@
-<div class="settings"></div>
+<h1 class="title">Settings</h1>
+
+<button class="new-button" (click)="openNewEventModal()">New</button>
+
+<div class="calendar-buttons">
+	<button>Reminders</button>
+	<button>Birthdays</button>
+	<button>World</button>
+</div>
+
+@if (isNewEventModalOpen) {
+	<app-modal (onClose)="closeNewEventModal()" [width]="'60vw'" [height]="'60vh'">
+		<app-new-event></app-new-event>
+	</app-modal>
+}

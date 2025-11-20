@@ -1,21 +1,25 @@
-enum CardType {
-	Birthday,
-	Reminder,
-	Email,
-	World,
-}
+export type CardType = "birthday" | "reminder" | "email" | "world";
 
-interface CardData {
+export interface CardData {
 	text: string;
 	date: Date;
 	type?: CardType;
 }
 
-interface CardGroupData {
+export type CardDateType = "date" | "dateyear" | "rrule" | "onetime";
+
+export interface CardGroupData {
 	cardData: CardData[];
 	title: string;
 }
 
-interface DashboardData {
+export interface DashboardData {
 	cardData: CardData[];
+}
+
+export interface CreateEventApiBody {
+	eventType: CardType;
+	eventText: string;
+	date: string;
+	dateType: CardDateType;
 }

@@ -1,11 +1,14 @@
-import { Component } from "@angular/core";
-import { DataService } from "../data-service";
-import { ActivatedRoute, Params, Router } from "@angular/router";
+import { Component, computed, Signal } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
 import { dateToString, generateGroups, toDate } from "../utils";
 import { CardGroup } from "../card-group/card-group";
 import { MatIconModule } from "@angular/material/icon";
 import { Settings } from "../settings/settings";
 import { Modal } from "../modal/modal";
+import { CardGroupData, DashboardData } from "../types";
+import { CreateQueryResult, injectQuery } from "@tanstack/angular-query-experimental";
+import { Observable } from "rxjs";
+import { HttpService } from "../http-service";
 
 @Component({
 	selector: "app-dashboard",
@@ -15,26 +18,39 @@ import { Modal } from "../modal/modal";
 })
 export class Dashboard {
 	dashboardData?: DashboardData;
-	groupGroups: CardGroupData[] = [];
+	groupGroups: Signal<CardGroupData[]>;
 	isSettingsOpen: boolean = false;
+	router: Router;
+	route: ActivatedRoute;
+	dashboardDataQuery: CreateQueryResult<CardGroupData[], Error>;
 
-	constructor(dataService: DataService, router: Router) {
-		const queryParamDay = new URLSearchParams(window.location.search).get("date");
-		let day;
-		if (queryParamDay) {
-			day = toDate(queryParamDay);
-		}
-		if (!day) {
-			day = new Date();
-			router.navigate([], {
+	constructor(httpService: HttpService, router: Router, route: ActivatedRoute) {
+		this.router = router;
+		this.route = route;
+
+		const dateParam = this.route.snapshot.queryParamMap.get("date");
+		let day = dateParam ? toDate(dateParam) : new Date();
+
+		if (!dateParam || !day) {
+			if (!day) {
+				day = new Date();
+			}
+			this.router.navigate([], {
+				relativeTo: this.route,
 				queryParams: { date: dateToString(day) },
 				queryParamsHandling: "merge",
+				replaceUrl: true,
 			});
 		}
-		dataService.getDashboardData(day).subscribe((data) => {
-			this.dashboardData = data;
-			this.groupGroups = generateGroups(data.cardData, day);
-			console.log(this.groupGroups);
+
+		this.dashboardDataQuery = injectQuery(() => ({
+			queryKey: ["dashboardData"],
+			queryFn: () => httpService.getDashboardData(day),
+			select: (data: DashboardData) => generateGroups(data.cardData, day),
+		}));
+
+		this.groupGroups = computed(() => {
+			return this.dashboardDataQuery.data() || [];
 		});
 	}
 

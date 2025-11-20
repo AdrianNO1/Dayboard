@@ -4,13 +4,13 @@
 			<mat-icon>settings</mat-icon>
 		</button>
 	</div>
-	@for (groupGroup of groupGroups; track groupGroup) {
+	@for (groupGroup of groupGroups(); track groupGroup) {
 		<app-card-group [group]="groupGroup"></app-card-group>
 	}
 </div>
 
 @if (isSettingsOpen) {
-	<app-modal (onClose)="closeSettings()">
+	<app-modal (onClose)="closeSettings()" [width]="'80vw'" [height]="'80vh'">
 		<app-settings></app-settings>
 	</app-modal>
 }

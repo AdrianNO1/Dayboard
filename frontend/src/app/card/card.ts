@@ -1,4 +1,5 @@
 import { Component, HostListener, Input } from "@angular/core";
+import { CardData } from "../types";
 
 @Component({
 	selector: "app-card",

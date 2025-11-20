@@ -1,3 +1,6 @@
+import { Router } from "@angular/router";
+import { CardData, CardGroupData } from "./types";
+
 export function generateGroups(cardData: CardData[], today: Date): CardGroupData[] {
 	const todayCards = cardData.filter((card) => areDatesOnSameDay(card.date, today));
 	const tomorrowCards = cardData.filter((card) =>
@@ -49,5 +52,5 @@ export function dateToString(date: Date): string {
 	const month = String(date.getMonth() + 1).padStart(2, "0");
 	const year = date.getFullYear();
 
-	return `${day}-${month}-${year}`;
+	return `${year}-${month}-${day}`;
 }

@@ -1,0 +1,41 @@
+<h2>New Event</h2>
+
+@for (type of eventTypeButtons; track type) {
+	<button
+		class="event-type-button {{ selectedEventType == type ? 'selected' : '' }}"
+		(click)="setSelectedEventType(type)"
+	>
+		{{ type }}
+	</button>
+}
+<br />
+<br />
+@switch (selectedEventType) {
+	@case ("reminder") {
+		<div>Title:</div>
+		<textarea [formControl]="eventText"></textarea>
+		<div>Date:</div>
+		<input type="date" [formControl]="date" />
+	}
+	@case ("birthday") {
+		<div>Who:</div>
+		<textarea [formControl]="eventText"></textarea>
+		<div>Date:</div>
+		<input type="date" [formControl]="date" />
+	}
+	@case ("world") {
+		<div>Title:</div>
+		<textarea [formControl]="eventText"></textarea>
+		<div>iCalendar RRULE or DD-MM</div>
+		<textarea [formControl]="date"></textarea>
+	}
+}
+<br />
+<br />
+<button (click)="onCreate()">Create</button>
+@if (successMessage) {
+	<p class="success">{{ successMessage }}</p>
+}
+@if (errorMessage) {
+	<p class="error">{{ errorMessage }}</p>
+}
