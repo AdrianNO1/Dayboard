@@ -1,7 +1,7 @@
 import { Component, inject } from "@angular/core";
-import { CardDateType, CardType, CreateEventApiBody } from "../types";
+import { EventDateType, EventType, CreateEventApiBody } from "../types";
 import { FormControl, ReactiveFormsModule, Validators } from "@angular/forms";
-import { RRule } from "rrule";
+import { RRule } from "RRule";
 import { dateToString, toDate } from "../utils";
 import { injectMutation, QueryClient } from "@tanstack/angular-query-experimental";
 import { HttpService } from "../http-service";
@@ -15,8 +15,8 @@ import { HttpService } from "../http-service";
 export class NewEvent {
 	httpService = inject(HttpService);
 	queryClient = inject(QueryClient);
-	selectedEventType: CardType = "birthday";
-	eventTypeButtons: CardType[] = ["reminder", "birthday", "world"];
+	selectedEventType: EventType = "Birthday";
+	eventTypeButtons: EventType[] = ["Reminder", "Birthday", "World"];
 
 	eventText = new FormControl("", Validators.required);
 	date = new FormControl("", Validators.required);
@@ -50,12 +50,12 @@ export class NewEvent {
 		this.errorMessage = "";
 	}
 
-	setSelectedEventType(type: CardType) {
+	setSelectedEventType(type: EventType) {
 		this.selectedEventType = type;
 	}
 
 	onCreate() {
-		let dateType: CardDateType;
+		let dateType: EventDateType;
 		if (this.eventText.invalid || this.date.invalid) {
 			this.setError("invalid fields");
 			return;
@@ -67,14 +67,14 @@ export class NewEvent {
 		}
 		const DD_MM_re = /^(?:[1-9]|0[1-9]|[12]\d|3[01])[-.](?:[1-9]|0[1-9]|1[0-2])$/;
 		if (DD_MM_re.test(value)) {
-			dateType = "date";
+			dateType = "Date";
 		} else if (toDate(value)) {
 			value = dateToString(toDate(value)!);
-			dateType = "dateyear";
+			dateType = "Dateyear";
 		} else {
 			try {
 				RRule.fromString(value);
-				dateType = "rrule";
+				dateType = "RRule";
 			} catch {
 				this.setError("invalid rrule");
 				return;

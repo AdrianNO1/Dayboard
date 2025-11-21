@@ -1,5 +1,5 @@
 import { Component, HostListener, Input } from "@angular/core";
-import { CardData } from "../types";
+import { EventData } from "../types";
 
 @Component({
 	selector: "app-card",
@@ -8,7 +8,7 @@ import { CardData } from "../types";
 	styleUrl: "./card.scss",
 })
 export class Card {
-	@Input() data?: CardData;
+	@Input() data?: EventData;
 
 	get backgroundColor() {
 		return "#2196f3";

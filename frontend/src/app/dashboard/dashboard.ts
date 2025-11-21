@@ -5,9 +5,8 @@ import { CardGroup } from "../card-group/card-group";
 import { MatIconModule } from "@angular/material/icon";
 import { Settings } from "../settings/settings";
 import { Modal } from "../modal/modal";
-import { CardGroupData, DashboardData } from "../types";
+import { EventGroupData, DashboardData } from "../types";
 import { CreateQueryResult, injectQuery } from "@tanstack/angular-query-experimental";
-import { Observable } from "rxjs";
 import { HttpService } from "../http-service";
 
 @Component({
@@ -18,11 +17,11 @@ import { HttpService } from "../http-service";
 })
 export class Dashboard {
 	dashboardData?: DashboardData;
-	groupGroups: Signal<CardGroupData[]>;
+	groupGroups: Signal<EventGroupData[]>;
 	isSettingsOpen: boolean = false;
 	router: Router;
 	route: ActivatedRoute;
-	dashboardDataQuery: CreateQueryResult<CardGroupData[], Error>;
+	dashboardDataQuery: CreateQueryResult<EventGroupData[], Error>;
 
 	constructor(httpService: HttpService, router: Router, route: ActivatedRoute) {
 		this.router = router;
@@ -46,7 +45,7 @@ export class Dashboard {
 		this.dashboardDataQuery = injectQuery(() => ({
 			queryKey: ["dashboardData"],
 			queryFn: () => httpService.getDashboardData(day),
-			select: (data: DashboardData) => generateGroups(data.cardData, day),
+			select: (data: DashboardData) => generateGroups(data.eventData, day),
 		}));
 
 		this.groupGroups = computed(() => {

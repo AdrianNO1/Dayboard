@@ -11,19 +11,19 @@
 <br />
 <br />
 @switch (selectedEventType) {
-	@case ("reminder") {
+	@case ("Reminder") {
 		<div>Title:</div>
 		<textarea [formControl]="eventText"></textarea>
 		<div>Date:</div>
 		<input type="date" [formControl]="date" />
 	}
-	@case ("birthday") {
+	@case ("Birthday") {
 		<div>Who:</div>
 		<textarea [formControl]="eventText"></textarea>
 		<div>Date:</div>
 		<input type="date" [formControl]="date" />
 	}
-	@case ("world") {
+	@case ("World") {
 		<div>Title:</div>
 		<textarea [formControl]="eventText"></textarea>
 		<div>iCalendar RRULE or DD-MM</div>

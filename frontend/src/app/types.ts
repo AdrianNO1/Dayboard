@@ -1,25 +1,25 @@
-export type CardType = "birthday" | "reminder" | "email" | "world";
+export type EventType = "Birthday" | "Reminder" | "Email" | "World";
 
-export interface CardData {
+export interface EventData {
 	text: string;
 	date: Date;
-	type?: CardType;
+	type?: EventType;
 }
 
-export type CardDateType = "date" | "dateyear" | "rrule" | "onetime";
+export type EventDateType = "Date" | "Dateyear" | "RRule" | "Onetime";
 
-export interface CardGroupData {
-	cardData: CardData[];
+export interface EventGroupData {
+	eventData: EventData[];
 	title: string;
 }
 
 export interface DashboardData {
-	cardData: CardData[];
+	eventData: EventData[];
 }
 
 export interface CreateEventApiBody {
-	eventType: CardType;
+	eventType: EventType;
 	eventText: string;
 	date: string;
-	dateType: CardDateType;
+	dateType: EventDateType;
 }

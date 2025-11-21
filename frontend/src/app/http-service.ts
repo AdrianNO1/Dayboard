@@ -9,25 +9,8 @@ const cardData = [
 		date: new Date(),
 		text: "hello lorem iåsum something ioa jasdj oaij dija ji jsaid jaisojad jiasdj ihrugh ruigh rui ghuihurhg u",
 	},
-	{
-		date: new Date(),
-		text: "hello lorem iåsum something ioa jasdj oaij dija ji jsaid jaisojad jiasdj ihrugh ruigh rui ghuihurhg u",
-	},
-	{
-		date: new Date(),
-		text: "hello lorem iåsum something ioa jasdj oaij dija ji jsaid jaisojad jiasdj ihrugh ruigh rui ghuihurhg u",
-	},
-	{
-		date: new Date(),
-		text: "hello lorem iåsum something ioa jasdj oaij dija ji jsaid jaisojad jiasdj ihrugh ruigh rui ghuihurhg u",
-	},
-	{ date: new Date(), text: "hello" },
 	{ date: new Date(), text: "hello" },
 	{ date: new Date(), text: "helloooooooooo" },
-	{
-		date: new Date(),
-		text: "hello lorem iåsum something ioa jasdj oaij dija ji jsaid jaisojad jiasdj ihrugh ruigh rui ghuihurhg u",
-	},
 	{
 		date: addDays(new Date(), 1),
 		text: "tomorrow",
@@ -39,7 +22,7 @@ const cardData = [
 ];
 
 const dashboardData: DashboardData = {
-	cardData,
+	eventData: cardData,
 };
 
 @Injectable({

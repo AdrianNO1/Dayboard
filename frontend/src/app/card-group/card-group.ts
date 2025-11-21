@@ -1,6 +1,6 @@
 import { Component, Input } from "@angular/core";
 import { Card } from "../card/card";
-import { CardGroupData } from "../types";
+import { EventGroupData } from "../types";
 
 @Component({
 	selector: "app-card-group",
@@ -9,13 +9,13 @@ import { CardGroupData } from "../types";
 	styleUrl: "./card-group.scss",
 })
 export class CardGroup {
-	@Input() group?: CardGroupData;
+	@Input() group?: EventGroupData;
 
 	get title() {
 		return this.group?.title || "";
 	}
 
 	get cards() {
-		return this.group?.cardData || [];
+		return this.group?.eventData || [];
 	}
 }

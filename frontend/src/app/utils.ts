@@ -1,7 +1,7 @@
 import { Router } from "@angular/router";
-import { CardData, CardGroupData } from "./types";
+import { EventData, EventGroupData } from "./types";
 
-export function generateGroups(cardData: CardData[], today: Date): CardGroupData[] {
+export function generateGroups(cardData: EventData[], today: Date): EventGroupData[] {
 	const todayCards = cardData.filter((card) => areDatesOnSameDay(card.date, today));
 	const tomorrowCards = cardData.filter((card) =>
 		areDatesOnSameDay(card.date, addDays(today, 1)),
@@ -11,15 +11,15 @@ export function generateGroups(cardData: CardData[], today: Date): CardGroupData
 	return [
 		{
 			title: "Today",
-			cardData: todayCards,
+			eventData: todayCards,
 		},
 		{
 			title: "Tomorrow",
-			cardData: tomorrowCards,
+			eventData: tomorrowCards,
 		},
 		{
 			title: "Upcoming",
-			cardData: otherCards,
+			eventData: otherCards,
 		},
 	];
 }
