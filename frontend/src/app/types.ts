@@ -1,25 +1,22 @@
 export type EventType = "Birthday" | "Reminder" | "Email" | "World";
 
 export interface EventData {
-	text: string;
-	date: Date;
-	type?: EventType;
+	eventText: string;
+	eventType: EventType;
+	date: string;
+	dateType: EventDateType;
+	daysNotice: number
 }
 
-export type EventDateType = "Date" | "Dateyear" | "RRule" | "Onetime";
+export type CreateEventData = Omit<EventData, "daysNotice">
 
-export interface EventGroupData {
-	eventData: EventData[];
+export type EventDateType = "Date" | "Dateyear" | "RRule";
+
+export interface EventGroup {
+	events: EventData[];
 	title: string;
 }
 
 export interface DashboardData {
-	eventData: EventData[];
-}
-
-export interface CreateEventApiBody {
-	eventType: EventType;
-	eventText: string;
-	date: string;
-	dateType: EventDateType;
+	events: EventData[];
 }

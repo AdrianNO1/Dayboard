@@ -7,6 +7,9 @@
 	@for (groupGroup of groupGroups(); track groupGroup) {
 		<app-card-group [group]="groupGroup"></app-card-group>
 	}
+	@if (dashboardDataQuery.isError()) {
+		<p class="error">{{ dashboardDataQuery.error().stack }}</p>
+	}
 </div>
 
 @if (isSettingsOpen) {

@@ -2,6 +2,7 @@ package com.fisk.dayboardapi.rest;
 
 import com.fisk.dayboardapi.models.Event;
 import com.fisk.dayboardapi.repo.EventRepository;
+import com.fisk.dayboardapi.validation.ValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +30,7 @@ public class EventController {
 
     @PostMapping
     public Event createEvent(@RequestBody Event event) {
+		ValidationService.validateEvent(event);
         return eventRepository.save(event);
     }
 

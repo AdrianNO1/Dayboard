@@ -1,5 +1,6 @@
 import { Component, HostListener, Input } from "@angular/core";
 import { EventData } from "../types";
+import { toDate, toNorwayFormatDate } from "../utils";
 
 @Component({
 	selector: "app-card",
@@ -15,8 +16,8 @@ export class Card {
 	}
 
 	get title() {
-		if (this.data) {
-			return this.data.date.toLocaleDateString("no-NO");
+		if (this.data?.date) {
+			return toNorwayFormatDate(this.data.date);
 		}
 		return "";
 	}

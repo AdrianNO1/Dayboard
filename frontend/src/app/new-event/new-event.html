@@ -30,6 +30,8 @@
 		<textarea [formControl]="date"></textarea>
 	}
 }
+<div>Days notice:</div>
+<input type="number" min="1" [formControl]="daysNotice" />
 <br />
 <br />
 <button (click)="onCreate()">Create</button>

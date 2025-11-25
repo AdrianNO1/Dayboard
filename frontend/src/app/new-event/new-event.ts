@@ -1,5 +1,5 @@
 import { Component, inject } from "@angular/core";
-import { EventDateType, EventType, CreateEventApiBody } from "../types";
+import { EventDateType, EventType, EventData, CreateEventData } from "../types";
 import { FormControl, ReactiveFormsModule, Validators } from "@angular/forms";
 import { RRule } from "RRule";
 import { dateToString, toDate } from "../utils";
@@ -20,22 +20,23 @@ export class NewEvent {
 
 	eventText = new FormControl("", Validators.required);
 	date = new FormControl("", Validators.required);
+	daysNotice = new FormControl("");
 	errorMessage: string = "";
 	successMessage: string = "";
 
 	mutation = injectMutation(() => ({
-		mutationFn: (payload: CreateEventApiBody) => this.httpService.createNewEvent(payload),
-		onSuccess: (data, variables, context) => {
+		mutationFn: (payload: CreateEventData) => this.httpService.createNewEvent(payload),
+		onSuccess: () => {
 			this.eventText.reset();
 			this.date.reset();
 			this.setSuccess("Success!");
 			this.queryClient.invalidateQueries({ queryKey: ["dashboardData"] });
 		},
-		onError: (error, variables, context) => {
-			this.setError(error.message);
+		onError: (error) => {
+			this.setError((error as any).error?.message || error.message);
 			console.error(error);
 		},
-		onMutate: async (variables) => {
+		onMutate: async () => {
 			this.setError("");
 		},
 	}));
@@ -56,15 +57,17 @@ export class NewEvent {
 
 	onCreate() {
 		let dateType: EventDateType;
-		if (this.eventText.invalid || this.date.invalid) {
-			this.setError("invalid fields");
-			return;
-		}
 		let value = this.date.value;
 		if (value === null) {
 			this.setError("missing date");
 			return;
 		}
+
+		if (this.eventText.invalid || this.date.invalid) {
+			this.setError("invalid fields");
+			return;
+		}
+
 		const DD_MM_re = /^(?:[1-9]|0[1-9]|[12]\d|3[01])[-.](?:[1-9]|0[1-9]|1[0-2])$/;
 		if (DD_MM_re.test(value)) {
 			dateType = "Date";
@@ -73,6 +76,9 @@ export class NewEvent {
 			dateType = "Dateyear";
 		} else {
 			try {
+				if (value.startsWith("RRULE:")) {
+					value = value.slice("RRULE:".length)
+				}
 				RRule.fromString(value);
 				dateType = "RRule";
 			} catch {
@@ -87,7 +93,7 @@ export class NewEvent {
 			return;
 		}
 
-		const body: CreateEventApiBody = {
+		const body: CreateEventData = {
 			eventType: this.selectedEventType,
 			eventText,
 			date: value,

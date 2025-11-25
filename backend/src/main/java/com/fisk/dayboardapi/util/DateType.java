@@ -4,5 +4,4 @@ public enum DateType {
     Date,
     Dateyear,
     RRule,
-    Onetime
 }
