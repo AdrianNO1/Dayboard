@@ -1,0 +1,18 @@
+.weather-embed-container {
+	width: 500px;
+	height: 219px;
+	overflow: hidden;
+	position: relative;
+
+	img {
+		position: absolute;
+		top: -31px;
+		left: 0;
+		width: inherit;
+		cursor: pointer;
+	}
+}
+
+.big-img {
+	width: 1000px;
+}

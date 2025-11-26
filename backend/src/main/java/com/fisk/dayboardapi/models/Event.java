@@ -5,7 +5,12 @@ import com.fisk.dayboardapi.util.DateType;
 import com.fisk.dayboardapi.util.EventType;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 @Data
@@ -29,6 +34,14 @@ public class Event {
 
     @Column(nullable = false)
     private String date;
+
+	@Column(nullable = false, updatable = false)
+	@CreatedDate
+	private Instant createdAt;
+
+	@LastModifiedDate
+	@Column(nullable = false)
+	private Instant updatedAt;
 
 	@Column
 	private Integer daysNotice;

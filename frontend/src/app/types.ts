@@ -5,16 +5,17 @@ export interface EventData {
 	eventType: EventType;
 	date: string;
 	dateType: EventDateType;
-	daysNotice: number
+	daysNotice: number;
 }
 
-export type CreateEventData = Omit<EventData, "daysNotice">
+export type CreateEventData = Omit<EventData, "daysNotice">;
 
 export type EventDateType = "Date" | "Dateyear" | "RRule";
 
 export interface EventGroup {
 	events: EventData[];
 	title: string;
+	showIfEmpty?: boolean;
 }
 
 export interface DashboardData {

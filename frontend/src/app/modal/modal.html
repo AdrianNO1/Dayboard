@@ -1,12 +1,14 @@
 <div class="modal-overlay" (click)="close()">
 	<div
 		class="modal-container"
-		(click)="$event.stopPropagation()"
+		[class.barebones]="barebonesModal"
 		[style.width]="width"
 		[style.height]="height"
 	>
-		<button class="modal-close" (click)="close()">&times;</button>
-		<div class="modal-content">
+		@if (!barebonesModal) {
+			<button class="modal-close" (click)="close()">&times;</button>
+		}
+		<div class="modal-content" (click)="$event.stopPropagation()">
 			<ng-content></ng-content>
 		</div>
 	</div>

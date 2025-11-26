@@ -1,9 +1,5 @@
 @if (data) {
-	<div
-		class="card-container"
-		[style.backgroundColor]="backgroundColor"
-		(contextmenu)="onRightClick($event)"
-	>
+	<div class="card-container" [style]="getEventStyles()" (contextmenu)="onRightClick($event)">
 		@if (title) {
 			<div class="title">{{ title }}</div>
 		}

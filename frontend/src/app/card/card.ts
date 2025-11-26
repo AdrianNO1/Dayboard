@@ -1,6 +1,7 @@
 import { Component, HostListener, Input } from "@angular/core";
 import { EventData } from "../types";
-import { toDate, toNorwayFormatDate } from "../utils";
+import { formatDateAsTitle } from "../utils";
+import { EVENT_TYPE_STYLES, INSTANT_EVENT_TYPES } from "../config";
 
 @Component({
 	selector: "app-card",
@@ -15,14 +16,16 @@ export class Card {
 		return "#2196f3";
 	}
 
+	get textColor() {
+		return null;
+	}
+
 	get title() {
-		if (this.data?.date) {
-			return toNorwayFormatDate(this.data.date);
+		if (this.data?.date && !INSTANT_EVENT_TYPES.has(this.data.eventType)) {
+			return formatDateAsTitle(this.data.date);
 		}
 		return "";
 	}
-
-	constructor() {}
 
 	contextMenuVisible = false;
 	contextMenuX = 0;
@@ -43,5 +46,9 @@ export class Card {
 	onSnooze() {
 		console.log("snooozed");
 		this.hideMenu();
+	}
+
+	getEventStyles() {
+		return this.data ? EVENT_TYPE_STYLES[this.data.eventType] : null;
 	}
 }

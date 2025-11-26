@@ -2,7 +2,7 @@ import { Component, inject } from "@angular/core";
 import { EventDateType, EventType, EventData, CreateEventData } from "../types";
 import { FormControl, ReactiveFormsModule, Validators } from "@angular/forms";
 import { RRule } from "RRule";
-import { dateToString, toDate } from "../utils";
+import { dateToString, stringToDate } from "../utils";
 import { injectMutation, QueryClient } from "@tanstack/angular-query-experimental";
 import { HttpService } from "../http-service";
 
@@ -71,13 +71,13 @@ export class NewEvent {
 		const DD_MM_re = /^(?:[1-9]|0[1-9]|[12]\d|3[01])[-.](?:[1-9]|0[1-9]|1[0-2])$/;
 		if (DD_MM_re.test(value)) {
 			dateType = "Date";
-		} else if (toDate(value)) {
-			value = dateToString(toDate(value)!);
+		} else if (stringToDate(value)) {
+			value = dateToString(stringToDate(value)!);
 			dateType = "Dateyear";
 		} else {
 			try {
 				if (value.startsWith("RRULE:")) {
-					value = value.slice("RRULE:".length)
+					value = value.slice("RRULE:".length);
 				}
 				RRule.fromString(value);
 				dateType = "RRule";

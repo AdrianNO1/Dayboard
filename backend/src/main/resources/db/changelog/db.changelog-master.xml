@@ -11,6 +11,7 @@
 
     <!-- Make a file for each release. Existing files can be updated, but the existing changeSet elements
         must not be modified without changing the changeSet id. They can be deleted. -->
-    <include file="./0001_dayboard_schema.xml" relativeToChangelogFile="true"/>
+    <include file="0001_dayboard_schema.xml" relativeToChangelogFile="true"/>
 	<include file="0002_add_days_notice.xml" relativeToChangelogFile="true"/>
+	<include file="0003_add_created_updated.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

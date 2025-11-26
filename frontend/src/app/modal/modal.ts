@@ -9,6 +9,8 @@ import { Component, EventEmitter, Input, Output } from "@angular/core";
 export class Modal {
 	@Input() width: string = "80vw";
 	@Input() height: string = "80vh";
+	@Input() showModalCloseButton: boolean = true;
+	@Input() barebonesModal: boolean = false;
 	@Output() onClose = new EventEmitter<void>();
 
 	close() {

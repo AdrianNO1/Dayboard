@@ -1,0 +1,9 @@
+<div class="weather-embed-container">
+	<img [src]="embedUrl" (click)="openBig()" />
+</div>
+
+@if (bigModalOpen) {
+	<app-modal (onClose)="closeBig()" [width]="'100vw'" [height]="'100vh'" [barebonesModal]="true">
+		<img class="big-img" [src]="embedUrl" (click)="openBig()" />
+	</app-modal>
+}

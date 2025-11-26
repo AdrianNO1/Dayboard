@@ -19,7 +19,11 @@ export class HttpService {
 	}
 
 	getDashboardData(date: Date): Promise<DashboardData> {
-		const stuff = firstValueFrom(this.http.get<DashboardData>(this.DASHBOARD_ENDPOINT, { params: { date: dateToString(date) } }))
-		return stuff
+		const stuff = firstValueFrom(
+			this.http.get<DashboardData>(this.DASHBOARD_ENDPOINT, {
+				params: { date: dateToString(date) },
+			}),
+		);
+		return stuff;
 	}
 }
