@@ -78,18 +78,24 @@ export class NewEvent {
 			this.setError("missing event text");
 			return;
 		}
-
+		let dateType = this.selectedDateType
 		switch (this.selectedDateType) {
-			case "Date":
-				const DD_MM_re = /^(?:[1-9]|0[1-9]|[12]\d|3[01])[-.](?:[1-9]|0[1-9]|1[0-2])$/;
-				if (!DD_MM_re.test(date)) {
-					this.setError("Invalid DD-MM date");
-					return;
-				}
-				break;
 			case "Dateyear":
 				if (!stringToDate(date)) {
 					this.setError("Invalid date year format");
+					return;
+				}
+				if (this.selectedEventType === "Birthday") {
+					date = date.split("-").slice(0, 2).join("-")
+					dateType = "Date"
+				} else {
+					break;
+				}
+			case "Date":
+				console.log("date:", date)
+				const DD_MM_re = /^(?:[1-9]|0[1-9]|[12]\d|3[01])[-.](?:[1-9]|0[1-9]|1[0-2])$/;
+				if (!DD_MM_re.test(date)) {
+					this.setError("Invalid DD-MM date");
 					return;
 				}
 				break;
@@ -109,7 +115,7 @@ export class NewEvent {
 			eventType: this.selectedEventType,
 			eventText: this.eventText,
 			date: date,
-			dateType: this.selectedDateType,
+			dateType,
 		};
 
 		this.mutation.mutate(body);
