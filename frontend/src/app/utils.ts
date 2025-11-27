@@ -14,14 +14,14 @@ function stealCards<T>(cardsList: T[], stealFunc: (e: T) => boolean): T[] {
 }
 
 export function isManualEvent(e: EventData) {
-	return e.eventType !== "Email"
+	return e.eventType !== "Email";
 }
 
 export function generateGroups(eventData: EventData[], today: Date): EventGroup[] {
-	const manualEvents = eventData.filter(isManualEvent)
+	const manualEvents = eventData.filter(isManualEvent);
 	const normalized = normalizeEventDateToSameDateType(manualEvents, today);
 
-	const emailEvents = eventData.filter(event => event.eventType === "Email");
+	const emailEvents = eventData.filter((event) => event.eventType === "Email");
 	const todayEvents = stealCards(normalized, (card) => areDatesOnSameDay(card.date, today));
 	const tomorrowEvents = stealCards(normalized, (card) =>
 		areDatesOnSameDay(card.date, addDays(today, 1)),
@@ -49,7 +49,10 @@ export function generateGroups(eventData: EventData[], today: Date): EventGroup[
 	];
 }
 
-export function normalizeEventDateToSameDateType(eventData: ManualEventData[], today: Date): ManualEventData[] {
+export function normalizeEventDateToSameDateType(
+	eventData: ManualEventData[],
+	today: Date,
+): ManualEventData[] {
 	const normalized: ManualEventData[] = [];
 	for (const event of deepCopy(eventData)) {
 		switch (event.dateType) {
@@ -133,7 +136,7 @@ export function ensureDate(date: string | Date): Date {
 		}
 		date = dateOrUndefined;
 	}
-	return date
+	return date;
 }
 
 export function getOrdinal(n: number) {
@@ -143,14 +146,14 @@ export function getOrdinal(n: number) {
 }
 
 export function formatDateAsShortTitle(date: string | Date) {
-	date = ensureDate(date)
+	date = ensureDate(date);
 	const day = date.getDate();
 	const month = date.toLocaleString("en-GB", { month: "short" }).toLowerCase();
 	return `${getOrdinal(day)} ${month}`;
 }
 
 export function formatDateAsLongTitle(date: string | Date) {
-	date = ensureDate(date)
+	date = ensureDate(date);
 	if (typeof date === "string") {
 		const dateOrUndefined = stringToDate(date);
 		if (!dateOrUndefined) {
@@ -162,4 +165,3 @@ export function formatDateAsLongTitle(date: string | Date) {
 	const month = date.toLocaleString("en-GB", { month: "long" }).toLowerCase();
 	return `${getOrdinal(day)} ${month}`;
 }
-

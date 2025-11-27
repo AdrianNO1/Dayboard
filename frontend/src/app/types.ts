@@ -1,5 +1,5 @@
 export type EventType = "Birthday" | "Reminder" | "Email" | "World";
-export type ManualEventType = Exclude<EventType, "Email">
+export type ManualEventType = Exclude<EventType, "Email">;
 
 export interface ManualEventData {
 	id: number;
@@ -19,7 +19,7 @@ export interface Email {
 	sender: string;
 }
 
-export type EventData = ManualEventData | Email
+export type EventData = ManualEventData | Email;
 
 export interface CreateEventData {
 	eventText: string;
