@@ -1,8 +1,8 @@
-import { EventData, EventGroup } from "./types";
+import { EventData, EventGroup, ManualEventData } from "./types";
 import { RRule } from "RRule";
 
-function stealCards(cardsList: EventData[], stealFunc: (e: EventData) => boolean): EventData[] {
-	const stolen: EventData[] = [];
+function stealCards<T>(cardsList: T[], stealFunc: (e: T) => boolean): T[] {
+	const stolen: T[] = [];
 	for (let i = 0; i < cardsList.length; i++) {
 		const card = cardsList[i - stolen.length];
 		if (stealFunc(card)) {
@@ -13,28 +13,33 @@ function stealCards(cardsList: EventData[], stealFunc: (e: EventData) => boolean
 	return stolen;
 }
 
-export function generateGroups(cardData: EventData[], today: Date): EventGroup[] {
-	const normalized = normalizeEventDateToSameDateType(cardData, today);
+export function isManualEvent(e: EventData) {
+	return e.eventType !== "Email"
+}
 
-	const emailCards = stealCards(normalized, (card) => card.eventType === "Email");
-	const todayCards = stealCards(normalized, (card) => areDatesOnSameDay(card.date, today));
-	const tomorrowCards = stealCards(normalized, (card) =>
+export function generateGroups(eventData: EventData[], today: Date): EventGroup[] {
+	const manualEvents = eventData.filter(isManualEvent)
+	const normalized = normalizeEventDateToSameDateType(manualEvents, today);
+
+	const emailEvents = eventData.filter(event => event.eventType === "Email");
+	const todayEvents = stealCards(normalized, (card) => areDatesOnSameDay(card.date, today));
+	const tomorrowEvents = stealCards(normalized, (card) =>
 		areDatesOnSameDay(card.date, addDays(today, 1)),
 	);
 
 	return [
 		{
 			title: "Today",
-			events: todayCards,
+			events: todayEvents,
 			showIfEmpty: true,
 		},
 		{
 			title: "Emails",
-			events: emailCards,
+			events: emailEvents,
 		},
 		{
 			title: "Tomorrow",
-			events: tomorrowCards,
+			events: tomorrowEvents,
 		},
 		{
 			title: "Upcoming",
@@ -44,8 +49,8 @@ export function generateGroups(cardData: EventData[], today: Date): EventGroup[]
 	];
 }
 
-export function normalizeEventDateToSameDateType(eventData: EventData[], today: Date): EventData[] {
-	const normalized: EventData[] = [];
+export function normalizeEventDateToSameDateType(eventData: ManualEventData[], today: Date): ManualEventData[] {
+	const normalized: ManualEventData[] = [];
 	for (const event of deepCopy(eventData)) {
 		switch (event.dateType) {
 			case "Dateyear":

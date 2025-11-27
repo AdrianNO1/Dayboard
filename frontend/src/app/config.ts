@@ -20,5 +20,3 @@ export const EVENT_TYPE_STYLES: Record<EventType, Record<string, string>> = {
 		color: "#000000",
 	},
 };
-
-export const INSTANT_EVENT_TYPES: Set<EventType> = new Set(["Email"]);

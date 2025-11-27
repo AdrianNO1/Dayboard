@@ -1,7 +1,7 @@
 import { Component, HostListener, Input } from "@angular/core";
 import { EventData } from "../types";
 import { formatDateAsShortTitle } from "../utils";
-import { EVENT_TYPE_STYLES, INSTANT_EVENT_TYPES } from "../config";
+import { EVENT_TYPE_STYLES } from "../config";
 
 @Component({
 	selector: "app-card",
@@ -21,10 +21,10 @@ export class Card {
 	}
 
 	get title() {
-		if (this.data?.eventTitle) {
+		if (this.data?.eventType === "Email") {
 			return this.data.eventTitle;
 		}
-		if (this.data?.date && !INSTANT_EVENT_TYPES.has(this.data.eventType)) {
+		if (this.data?.date) {
 			return formatDateAsShortTitle(this.data.date);
 		}
 		return "";
