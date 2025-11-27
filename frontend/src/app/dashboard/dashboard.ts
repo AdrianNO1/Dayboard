@@ -1,6 +1,6 @@
 import { Component, computed, Signal } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { dateToString, generateGroups, stringToDate } from "../utils";
+import { dateToString, formatDateAsLongTitle, generateGroups, stringToDate } from "../utils";
 import { CardGroup } from "../card-group/card-group";
 import { MatIconModule } from "@angular/material/icon";
 import { Settings } from "../settings/settings";
@@ -9,6 +9,7 @@ import { EventGroup, DashboardData } from "../types";
 import { CreateQueryResult, injectQuery } from "@tanstack/angular-query-experimental";
 import { HttpService } from "../http-service";
 import { Weather } from "../weather/weather";
+import { Title } from "@angular/platform-browser";
 
 @Component({
 	selector: "app-dashboard",
@@ -20,28 +21,22 @@ export class Dashboard {
 	dashboardData?: DashboardData;
 	groupGroups: Signal<EventGroup[]>;
 	isSettingsOpen: boolean = false;
-	router: Router;
-	route: ActivatedRoute;
 	dashboardDataQuery: CreateQueryResult<EventGroup[], Error>;
 
-	constructor(httpService: HttpService, router: Router, route: ActivatedRoute) {
-		this.router = router;
-		this.route = route;
+	constructor(private router: Router, private route: ActivatedRoute, httpService: HttpService, titleService: Title) {
+		const dateParam = new URLSearchParams(window.location.search).get("date");
+		let day = (dateParam && stringToDate(dateParam)) || new Date();
 
-		const dateParam = this.route.snapshot.queryParamMap.get("date");
-		let day = dateParam ? stringToDate(dateParam) : new Date();
-
-		if (!dateParam || !day) {
-			if (!day) {
-				day = new Date();
-			}
+		if (dateParam != dateToString(day)) {
+			const dayString = dateToString(day)
 			this.router.navigate([], {
 				relativeTo: this.route,
-				queryParams: { date: dateToString(day) },
+				queryParams: { date: dayString },
 				queryParamsHandling: "merge",
 				replaceUrl: true,
 			});
 		}
+		titleService.setTitle(formatDateAsLongTitle(day))
 
 		this.dashboardDataQuery = injectQuery(() => ({
 			queryKey: ["dashboardData"],
