@@ -1,6 +1,6 @@
 import { Component, HostListener, Input } from "@angular/core";
 import { EventData } from "../types";
-import { formatDateAsTitle } from "../utils";
+import { formatDateAsShortTitle } from "../utils";
 import { EVENT_TYPE_STYLES, INSTANT_EVENT_TYPES } from "../config";
 
 @Component({
@@ -21,8 +21,11 @@ export class Card {
 	}
 
 	get title() {
+		if (this.data?.eventTitle) {
+			return this.data.eventTitle;
+		}
 		if (this.data?.date && !INSTANT_EVENT_TYPES.has(this.data.eventType)) {
-			return formatDateAsTitle(this.data.date);
+			return formatDateAsShortTitle(this.data.date);
 		}
 		return "";
 	}

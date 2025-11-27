@@ -1,14 +1,23 @@
 export type EventType = "Birthday" | "Reminder" | "Email" | "World";
 
 export interface EventData {
+	id: number;
 	eventText: string;
+	eventTitle?: string;
 	eventType: EventType;
 	date: string;
 	dateType: EventDateType;
 	daysNotice: number;
+	createdAt: string;
+	updatedAt: string;
 }
 
-export type CreateEventData = Omit<EventData, "daysNotice">;
+export interface CreateEventData {
+	eventText: string;
+	eventType: EventType;
+	date: string;
+	dateType: EventDateType;
+}
 
 export type EventDateType = "Date" | "Dateyear" | "RRule";
 

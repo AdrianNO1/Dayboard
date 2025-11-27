@@ -4,9 +4,11 @@
 	@if (cards.length === 0) {
 		<p class="nothing">Nothing ever happens</p>
 	}
-	<div class="card-group">
-		@for (card of cards; track card) {
-			<app-card [data]="card"></app-card>
-		}
-	</div>
+	@else {
+		<div class="card-group">
+			@for (card of cards; track card) {
+				<app-card [data]="card"></app-card>
+			}
+		</div>
+	}
 }

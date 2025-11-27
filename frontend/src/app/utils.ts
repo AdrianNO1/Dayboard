@@ -46,7 +46,6 @@ export function generateGroups(cardData: EventData[], today: Date): EventGroup[]
 
 export function normalizeEventDateToSameDateType(eventData: EventData[], today: Date): EventData[] {
 	const normalized: EventData[] = [];
-	console.log(eventData);
 	for (const event of deepCopy(eventData)) {
 		switch (event.dateType) {
 			case "Dateyear":
@@ -121,13 +120,32 @@ export function dateToString(date: Date): string {
 	return `${year}-${month}-${day}`;
 }
 
+export function ensureDate(date: string | Date): Date {
+	if (typeof date === "string") {
+		const dateOrUndefined = stringToDate(date);
+		if (!dateOrUndefined) {
+			throw new Error("Invalid date");
+		}
+		date = dateOrUndefined;
+	}
+	return date
+}
+
 export function getOrdinal(n: number) {
 	const s = ["th", "st", "nd", "rd"];
 	const v = n % 100;
 	return n + (s[(v - 20) % 10] || s[v] || s[0]);
 }
 
-export function formatDateAsTitle(date: string | Date) {
+export function formatDateAsShortTitle(date: string | Date) {
+	date = ensureDate(date)
+	const day = date.getDate();
+	const month = date.toLocaleString("en-GB", { month: "short" }).toLowerCase();
+	return `${getOrdinal(day)} ${month}`;
+}
+
+export function formatDateAsLongTitle(date: string | Date) {
+	date = ensureDate(date)
 	if (typeof date === "string") {
 		const dateOrUndefined = stringToDate(date);
 		if (!dateOrUndefined) {
@@ -136,6 +154,7 @@ export function formatDateAsTitle(date: string | Date) {
 		date = dateOrUndefined;
 	}
 	const day = date.getDate();
-	const month = date.toLocaleString("en-GB", { month: "short" }).toLowerCase();
+	const month = date.toLocaleString("en-GB", { month: "long" }).toLowerCase();
 	return `${getOrdinal(day)} ${month}`;
 }
+
