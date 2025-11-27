@@ -18,6 +18,7 @@ export function isManualEvent(e: EventData) {
 }
 
 export function generateGroups(eventData: EventData[], today: Date): EventGroup[] {
+	console.log(eventData)
 	const manualEvents = eventData.filter(isManualEvent);
 	const normalized = normalizeEventDateToSameDateType(manualEvents, today);
 
@@ -62,7 +63,15 @@ export function normalizeEventDateToSameDateType(
 				break;
 			case "Date":
 				event.dateType = "Dateyear";
-				event.date = event.date + "-" + today.getFullYear();
+				let fullDateStr = event.date + "-" + today.getFullYear();
+				const fullDate = stringToDate(fullDateStr);
+				if (!fullDate) {
+					throw new Error("Invalid date")
+				}
+				if (fullDate < today) {
+					fullDateStr = event.date + "-" + today.getFullYear()+1;
+				}
+				event.date = fullDateStr
 				normalized.push(event);
 				break;
 			case "RRule":

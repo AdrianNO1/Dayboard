@@ -28,6 +28,7 @@ export interface CreateEventData {
 	eventType: EventType;
 	date: string;
 	dateType: EventDateType;
+	daysNotice?: number;
 }
 
 export interface EventGroup {

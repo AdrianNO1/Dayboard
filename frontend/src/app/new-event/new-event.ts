@@ -28,7 +28,7 @@ export class NewEvent {
 
 	eventText: string = "";
 	date: string = "";
-	daysNotice: string = "";
+	daysNotice?: number;
 	errorMessage: string = "";
 	successMessage: string = "";
 
@@ -116,6 +116,7 @@ export class NewEvent {
 			eventText: this.eventText,
 			date: date,
 			dateType,
+			daysNotice: this.daysNotice
 		};
 
 		this.mutation.mutate(body);
