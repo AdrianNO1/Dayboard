@@ -1,6 +1,7 @@
 package com.fisk.dayboardapi.validation;
 
 import com.fisk.dayboardapi.models.Event;
+import com.fisk.dayboardapi.models.EventDto;
 import com.fisk.dayboardapi.util.DateType;
 import net.fortuna.ical4j.model.property.RRule;
 import org.springframework.http.HttpStatus;
@@ -11,7 +12,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.ResolverStyle;
 
 public class ValidationService {
-	public static void validateEvent(Event event) {
+	public static void validateEvent(EventDto event) {
 		DateType dateType = event.getDateType();
 		String date = event.getDate();
 		switch (dateType) {

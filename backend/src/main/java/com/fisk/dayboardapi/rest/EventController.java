@@ -1,6 +1,8 @@
 package com.fisk.dayboardapi.rest;
 
+import com.fisk.dayboardapi.mappers.EventMapper;
 import com.fisk.dayboardapi.models.Event;
+import com.fisk.dayboardapi.models.EventDto;
 import com.fisk.dayboardapi.repo.EventRepository;
 import com.fisk.dayboardapi.validation.ValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,9 @@ public class EventController {
     @Autowired
     private EventRepository eventRepository;
 
+	@Autowired
+	private EventMapper eventMapper;
+
     @GetMapping
     public List<Event> getEvents() {
         return eventRepository.findAll();
@@ -31,8 +36,9 @@ public class EventController {
     }
 
     @PostMapping
-    public Event createEvent(@RequestBody Event event) {
-		ValidationService.validateEvent(event);
+    public Event createEvent(@RequestBody EventDto eventDto) {
+		ValidationService.validateEvent(eventDto);
+		Event event = eventMapper.toEvent(eventDto);
         return eventRepository.save(event);
     }
 

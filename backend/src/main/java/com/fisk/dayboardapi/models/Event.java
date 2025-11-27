@@ -4,18 +4,25 @@ import com.fisk.dayboardapi.config.EventConfig;
 import com.fisk.dayboardapi.util.DateType;
 import com.fisk.dayboardapi.util.EventType;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.envers.Audited;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.util.Objects;
 
+@EntityListeners(AuditingEntityListener.class)
+@Builder
 @Data
 @Entity
 @Table(name = "events")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
