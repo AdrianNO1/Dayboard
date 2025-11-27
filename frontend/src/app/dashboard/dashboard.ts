@@ -23,12 +23,17 @@ export class Dashboard {
 	isSettingsOpen: boolean = false;
 	dashboardDataQuery: CreateQueryResult<EventGroup[], Error>;
 
-	constructor(private router: Router, private route: ActivatedRoute, httpService: HttpService, titleService: Title) {
+	constructor(
+		private router: Router,
+		private route: ActivatedRoute,
+		httpService: HttpService,
+		titleService: Title,
+	) {
 		const dateParam = new URLSearchParams(window.location.search).get("date");
 		let day = (dateParam && stringToDate(dateParam)) || new Date();
 
 		if (dateParam != dateToString(day)) {
-			const dayString = dateToString(day)
+			const dayString = dateToString(day);
 			this.router.navigate([], {
 				relativeTo: this.route,
 				queryParams: { date: dayString },
@@ -36,7 +41,7 @@ export class Dashboard {
 				replaceUrl: true,
 			});
 		}
-		titleService.setTitle(formatDateAsLongTitle(day))
+		titleService.setTitle(formatDateAsLongTitle(day));
 
 		this.dashboardDataQuery = injectQuery(() => ({
 			queryKey: ["dashboardData"],

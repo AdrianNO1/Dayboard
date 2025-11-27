@@ -1,0 +1,9 @@
+@for (option of options; track option) {
+	<button
+		class="option-button"
+		[class.selected]="option == selectedOption"
+		(click)="selectOption(option)"
+	>
+		{{ option }}
+	</button>
+}

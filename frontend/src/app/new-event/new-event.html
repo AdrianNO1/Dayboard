@@ -1,37 +1,45 @@
 <h2>New Event</h2>
 
-@for (type of eventTypeButtons; track type) {
-	<button
-		class="event-type-button {{ selectedEventType == type ? 'selected' : '' }}"
-		(click)="setSelectedEventType(type)"
-	>
-		{{ type }}
-	</button>
-}
+<app-event-type-selector
+	(selectedOptionChange)="setSelectedEventType($event)"
+	[selectedOption]="selectedEventType"
+	[options]="eventTypeOptions"
+/>
+
 <br />
 <br />
-@switch (selectedEventType) {
-	@case ("Reminder") {
-		<div>Title:</div>
-		<textarea [formControl]="eventText"></textarea>
-		<div>Date:</div>
-		<input type="date" [formControl]="date" />
+@if (selectedEventType === "Birthday") {
+	<div>Who:</div>
+} @else {
+	<div>Title:</div>
+}
+<textarea [(ngModel)]="eventText"></textarea>
+
+<div>Date:</div>
+<app-event-date-type-selector
+	(selectedOptionChange)="setSelectedDateType($event)"
+	[selectedOption]="selectedDateType"
+	[options]="dateTypeOptions"
+/>
+
+<br />
+@switch (selectedDateType) {
+	@case ("Dateyear") {
+		<input type="date" [(ngModel)]="date" />
 	}
-	@case ("Birthday") {
-		<div>Who:</div>
-		<textarea [formControl]="eventText"></textarea>
-		<div>Date:</div>
-		<input type="date" [formControl]="date" />
+	@case ("Date") {
+		<textarea [(ngModel)]="date" placeholder="DD-MM"></textarea>
 	}
-	@case ("World") {
-		<div>Title:</div>
-		<textarea [formControl]="eventText"></textarea>
-		<div>iCalendar RRULE or DD-MM</div>
-		<textarea [formControl]="date"></textarea>
+	@case ("RRule") {
+		<textarea [(ngModel)]="date" placeholder="RRule"></textarea>
+	}
+	@case ("Custom") {
+		<textarea [(ngModel)]="date" placeholder="Custom"></textarea>
 	}
 }
+
 <div>Days notice:</div>
-<input type="number" min="1" [formControl]="daysNotice" />
+<input type="number" min="1" [(ngModel)]="daysNotice" />
 <br />
 <br />
 <button (click)="onCreate()">Create</button>

@@ -1,6 +1,8 @@
 export type EventType = "Birthday" | "Reminder" | "Email" | "World";
 export type ManualEventType = Exclude<EventType, "Email">;
 
+export type EventDateType = "Date" | "Dateyear" | "RRule" | "Custom";
+
 export interface ManualEventData {
 	id: number;
 	eventText: string;
@@ -27,8 +29,6 @@ export interface CreateEventData {
 	date: string;
 	dateType: EventDateType;
 }
-
-export type EventDateType = "Date" | "Dateyear" | "RRule";
 
 export interface EventGroup {
 	events: EventData[];
