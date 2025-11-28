@@ -1,5 +1,5 @@
-import { Component, computed, signal, Signal, WritableSignal } from "@angular/core";
-import { injectQuery } from "@tanstack/angular-query-experimental";
+import { Component, computed, EventEmitter, Input, Output, signal, Signal, WritableSignal } from "@angular/core";
+import { CreateQueryResult, injectQuery } from "@tanstack/angular-query-experimental";
 import { HttpService } from "../http-service";
 import { EventType, ManualEventData, ManualEventType } from "../types";
 import { EventTypeSelector } from "../button-selector/button-selector";
@@ -30,13 +30,11 @@ export class AllEventsView {
 
 	year: number = new Date().getFullYear();
 
-	allEventsDataQuery = injectQuery(() => ({
-		queryKey: ["allEventsData"],
-		queryFn: () => this.httpService.getAllEventsData(),
-	}));
+	@Input() allEventsData: Signal<ManualEventData[] | undefined> = signal(undefined)
+	@Output() onEventClick = new EventEmitter<ManualEventData>()
 
 	monthGroups: Signal<MonthGroup[]> = computed(() => {
-		const events = this.allEventsDataQuery.data() || [];
+		const events = this.allEventsData() || [];
 		const thisYear = getAllEventOccurencesInYear(events, this.year).filter((e) =>
 			this.shownEventTypes().includes(e.eventType),
 		);
@@ -51,8 +49,6 @@ export class AllEventsView {
 		}
 		return monthGroups;
 	});
-
-	constructor(private httpService: HttpService) {}
 
 	toggleEventTypeOption(option: ManualEventType) {
 		if (this.shownEventTypes().includes(option)) {

@@ -31,6 +31,10 @@ export interface CreateEventData {
 	daysNotice?: number;
 }
 
+export interface UpdateEventData extends CreateEventData {
+	id: number;
+}
+
 export interface EventGroup {
 	events: EventData[];
 	title: string;

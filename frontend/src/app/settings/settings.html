@@ -8,11 +8,17 @@
 </button>
 <br />
 @if (showAllEvents) {
-	<app-all-events-view />
+	<app-all-events-view [allEventsData]="allEventsData" (onEventClick)="openEventEditModal($event)"/>
 }
 
-@if (isNewEventModalOpen) {
+@if (isEventFormModalOpen) {
 	<app-modal (onClose)="closeNewEventModal()" [width]="'60vw'" [height]="'60vh'">
-		<app-new-event></app-new-event>
+		<app-event-form [initialData]="eventFormModalInitialData" [isEdit]="eventFormModalIsEdit"></app-event-form>
 	</app-modal>
+}
+
+@if (allEventsDataQuery.isError()) {
+	<p class="error">
+		{{ allEventsDataQuery.error().stack || allEventsDataQuery.error().message }}
+	</p>
 }

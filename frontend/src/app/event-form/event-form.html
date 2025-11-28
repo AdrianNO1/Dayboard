@@ -1,4 +1,4 @@
-<h2>New Event</h2>
+<h2>{{ getTitleText() }}</h2>
 
 <app-event-type-selector
 	(optionClicked)="setSelectedEventType($event)"
@@ -11,7 +11,7 @@
 @if (selectedEventType === "Birthday") {
 	<div>Who:</div>
 } @else {
-	<div>Title:</div>
+	<div>Event:</div>
 }
 <textarea [(ngModel)]="eventText"></textarea>
 
@@ -42,7 +42,7 @@
 <input type="number" min="1" [(ngModel)]="daysNotice" />
 <br />
 <br />
-<button (click)="onCreate()">Create</button>
+<button (click)="onSubmit()">{{ getSubmitButtonText() }}</button>
 @if (successMessage) {
 	<p class="success">{{ successMessage }}</p>
 }
