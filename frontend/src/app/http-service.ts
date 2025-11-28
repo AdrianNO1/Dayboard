@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
-import { CreateEventData, DashboardData, EventData } from "./types";
+import { CreateEventData, DashboardData, EventData, ManualEventData } from "./types";
 import { firstValueFrom } from "rxjs";
 import { addDays, dateToString } from "./utils";
 
@@ -19,11 +19,14 @@ export class HttpService {
 	}
 
 	getDashboardData(date: Date): Promise<DashboardData> {
-		const stuff = firstValueFrom(
+		return firstValueFrom(
 			this.http.get<DashboardData>(this.DASHBOARD_ENDPOINT, {
 				params: { date: dateToString(date) },
 			}),
 		);
-		return stuff;
+	}
+
+	getAllEventsData(): Promise<ManualEventData[]> {
+		return firstValueFrom(this.http.get<ManualEventData[]>(this.EVENTS_ENDPOINT));
 	}
 }

@@ -1,0 +1,76 @@
+$title-bg: #231b35;
+$text-main: #ffffff;
+$font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+
+.month-group-container {
+	margin-top: 1.5rem;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	row-gap: 1rem;
+	column-gap: 2rem;
+	width: 100%;
+	box-sizing: border-box;
+	font-family: $font-family;
+
+	@media (max-width: 900px) {
+		grid-template-columns: repeat(2, 1fr);
+	}
+	@media (max-width: 600px) {
+		grid-template-columns: 1fr;
+	}
+
+	.month-group {
+		display: flex;
+		flex-direction: column;
+		min-width: 0;
+
+		.title {
+			background-color: $title-bg;
+			color: $text-main;
+			padding: 0.6rem 1rem;
+			border-radius: 8px;
+			font-weight: 700;
+			font-size: 1rem;
+			margin-bottom: 1rem;
+			white-space: nowrap;
+		}
+
+		.events {
+			display: flex;
+			flex-direction: column;
+			gap: 0.5rem;
+
+			.event {
+				display: flex;
+				align-items: center;
+				color: $text-main;
+				font-size: 0.9rem;
+				border-radius: 4px;
+				padding-left: 0.3rem;
+				width: 100%;
+				line-height: 1;
+
+				.circle {
+					width: 10px;
+					height: 10px;
+					border-radius: 50%;
+					margin-right: 10px;
+					flex-shrink: 0;
+				}
+
+				.date {
+					white-space: nowrap;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					flex: 1;
+					cursor: pointer;
+					border-radius: 4px;
+					padding: 0.1rem 0.2rem;
+				}
+				&:hover {
+					background-color: rgba(255, 255, 255, 0.08);
+				}
+			}
+		}
+	}
+}

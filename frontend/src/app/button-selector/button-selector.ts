@@ -13,11 +13,15 @@ const imports: any = [];
 })
 export class ButtonSelector<T> {
 	@Input() options: T[] = [];
-	@Input() selectedOption?: T;
-	@Output() selectedOptionChange = new EventEmitter<T>();
+	@Input() selectedOptions: T[] = [];
+	@Output() optionClicked = new EventEmitter<T>();
 
 	selectOption(option: T) {
-		this.selectedOptionChange.emit(option);
+		this.optionClicked.emit(option);
+	}
+
+	isOptionSelected(option: T) {
+		return this.selectedOptions.includes(option);
 	}
 }
 

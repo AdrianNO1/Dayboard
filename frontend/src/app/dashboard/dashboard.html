@@ -10,7 +10,9 @@
 		<app-card-group [group]="groupGroup"></app-card-group>
 	}
 	@if (dashboardDataQuery.isError()) {
-		<p class="error">{{ dashboardDataQuery.error().stack }}</p>
+		<p class="error">
+			{{ dashboardDataQuery.error().stack || dashboardDataQuery.error().message }}
+		</p>
 	}
 </div>
 

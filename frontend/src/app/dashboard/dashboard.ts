@@ -20,7 +20,7 @@ import { Title } from "@angular/platform-browser";
 export class Dashboard {
 	dashboardData?: DashboardData;
 	groupGroups: Signal<EventGroup[]>;
-	isSettingsOpen: boolean = false;
+	isSettingsOpen: boolean = true;
 	dashboardDataQuery: CreateQueryResult<EventGroup[], Error>;
 
 	constructor(

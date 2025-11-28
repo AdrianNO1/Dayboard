@@ -39,6 +39,7 @@ export class NewEvent {
 			this.date = "";
 			this.setSuccess("Success!");
 			this.queryClient.invalidateQueries({ queryKey: ["dashboardData"] });
+			this.queryClient.invalidateQueries({ queryKey: ["allEventsData"] });
 		},
 		onError: (error) => {
 			this.setError((error as any).error?.message || error.message);
@@ -78,7 +79,7 @@ export class NewEvent {
 			this.setError("missing event text");
 			return;
 		}
-		let dateType = this.selectedDateType
+		let dateType = this.selectedDateType;
 		switch (this.selectedDateType) {
 			case "Dateyear":
 				if (!stringToDate(date)) {
@@ -86,13 +87,12 @@ export class NewEvent {
 					return;
 				}
 				if (this.selectedEventType === "Birthday") {
-					date = date.split("-").slice(0, 2).join("-")
-					dateType = "Date"
+					date = date.split("-").slice(0, 2).join("-");
+					dateType = "Date";
 				} else {
 					break;
 				}
 			case "Date":
-				console.log("date:", date)
 				const DD_MM_re = /^(?:[1-9]|0[1-9]|[12]\d|3[01])[-.](?:[1-9]|0[1-9]|1[0-2])$/;
 				if (!DD_MM_re.test(date)) {
 					this.setError("Invalid DD-MM date");
@@ -116,7 +116,7 @@ export class NewEvent {
 			eventText: this.eventText,
 			date: date,
 			dateType,
-			daysNotice: this.daysNotice
+			daysNotice: this.daysNotice,
 		};
 
 		this.mutation.mutate(body);

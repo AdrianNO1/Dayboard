@@ -1,0 +1,30 @@
+<app-event-type-selector
+	[options]="allEventTypes"
+	[selectedOptions]="shownEventTypes()"
+	(optionClicked)="toggleEventTypeOption($event)"
+></app-event-type-selector>
+
+<div class="month-group-container">
+	@for (monthGroup of monthGroups(); track monthGroup) {
+		<div class="month-group">
+			<div class="title">{{ getMonthGroupTitle(monthGroup) }}</div>
+			<div class="events">
+				@for (event of monthGroup.events; track event) {
+					<div class="event">
+						<div
+							class="circle"
+							[style.backgroundColor]="getMonthEventCircleColor(event.eventType)"
+						></div>
+						<div class="date">{{ getMonthEventDateText(event) }}</div>
+					</div>
+				}
+			</div>
+		</div>
+	}
+</div>
+
+@if (allEventsDataQuery.isError()) {
+	<p class="error">
+		{{ allEventsDataQuery.error().stack || allEventsDataQuery.error().message }}
+	</p>
+}

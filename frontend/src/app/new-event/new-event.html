@@ -1,8 +1,8 @@
 <h2>New Event</h2>
 
 <app-event-type-selector
-	(selectedOptionChange)="setSelectedEventType($event)"
-	[selectedOption]="selectedEventType"
+	(optionClicked)="setSelectedEventType($event)"
+	[selectedOptions]="[selectedEventType]"
 	[options]="eventTypeOptions"
 />
 
@@ -17,8 +17,8 @@
 
 <div>Date:</div>
 <app-event-date-type-selector
-	(selectedOptionChange)="setSelectedDateType($event)"
-	[selectedOption]="selectedDateType"
+	(optionClicked)="setSelectedDateType($event)"
+	[selectedOptions]="[selectedDateType]"
 	[options]="dateTypeOptions"
 />
 

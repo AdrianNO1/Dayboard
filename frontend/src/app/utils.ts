@@ -18,7 +18,6 @@ export function isManualEvent(e: EventData) {
 }
 
 export function generateGroups(eventData: EventData[], today: Date): EventGroup[] {
-	console.log(eventData)
 	const manualEvents = eventData.filter(isManualEvent);
 	const normalized = normalizeEventDateToSameDateType(manualEvents, today);
 
@@ -52,7 +51,8 @@ export function generateGroups(eventData: EventData[], today: Date): EventGroup[
 
 export function normalizeEventDateToSameDateType(
 	eventData: ManualEventData[],
-	today: Date,
+	day: Date,
+	daysNoticeOverwrite?: number,
 ): ManualEventData[] {
 	const normalized: ManualEventData[] = [];
 	for (const event of deepCopy(eventData)) {
@@ -63,23 +63,20 @@ export function normalizeEventDateToSameDateType(
 				break;
 			case "Date":
 				event.dateType = "Dateyear";
-				let fullDateStr = event.date + "-" + today.getFullYear();
+				let fullDateStr = event.date + "-" + day.getFullYear();
 				const fullDate = stringToDate(fullDateStr);
 				if (!fullDate) {
-					throw new Error("Invalid date")
+					throw new Error("Invalid date");
 				}
-				if (fullDate < today) {
-					fullDateStr = event.date + "-" + today.getFullYear()+1;
+				if (fullDate < day) {
+					fullDateStr = event.date + "-" + day.getFullYear() + 1;
 				}
-				event.date = fullDateStr
+				event.date = fullDateStr;
 				normalized.push(event);
 				break;
 			case "RRule":
 				const rrule = RRule.fromString(event.date);
-				const occurrences = rrule.between(
-					addDays(today, -1),
-					addDays(today, event.daysNotice),
-				);
+				const occurrences = rrule.between(addDays(day, -1), addDays(day, event.daysNotice));
 				for (const occurence of occurrences) {
 					const eventCopy = deepCopy(event);
 					eventCopy.dateType = "Dateyear";
@@ -90,6 +87,15 @@ export function normalizeEventDateToSameDateType(
 	}
 	normalized.sort((a, b) => stringToDate(a.date)!.getTime() - stringToDate(b.date)!.getTime());
 	return normalized;
+}
+
+export function getAllEventOccurencesInYear(eventData: ManualEventData[], year: number) {
+	const DAYS_IN_YEAR = 365;
+	const MARGIN = 3;
+	const yearStart = new Date(year, 0, 1);
+	return normalizeEventDateToSameDateType(eventData, yearStart, DAYS_IN_YEAR + MARGIN).filter(
+		(event) => stringToDate(event.date)?.getFullYear() === year,
+	);
 }
 
 export function deepCopy<T extends object>(obj: T): T {
@@ -157,7 +163,7 @@ export function getOrdinal(n: number) {
 export function formatDateAsShortTitle(date: string | Date) {
 	date = ensureDate(date);
 	const day = date.getDate();
-	const month = date.toLocaleString("en-GB", { month: "short" }).toLowerCase();
+	let month = date.toLocaleString("en-US", { month: "short" });
 	return `${getOrdinal(day)} ${month}`;
 }
 
@@ -171,6 +177,17 @@ export function formatDateAsLongTitle(date: string | Date) {
 		date = dateOrUndefined;
 	}
 	const day = date.getDate();
-	const month = date.toLocaleString("en-GB", { month: "long" }).toLowerCase();
+	let month = date.toLocaleString("en-US", { month: "long" });
 	return `${getOrdinal(day)} ${month}`;
+}
+
+export function capitalize(str: string) {
+	return str.slice(0, 1).toUpperCase() + str.slice(1).toLowerCase();
+}
+
+export function truncateText(text: string, maxChars: number, suffix: string = "..."): string {
+	if (text.length > maxChars) {
+		return text.slice(0, maxChars - suffix.length) + suffix;
+	}
+	return text;
 }
