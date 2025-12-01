@@ -10,10 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/events")
@@ -37,6 +34,9 @@ public class EventController {
 
     @PostMapping
     public Event createEvent(@RequestBody EventDto eventDto) {
+		if (eventRepository.existsByEventTextAndDate(eventDto.getEventText(), eventDto.getDate())) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Event already exists");
+		}
 		ValidationService.validateEvent(eventDto);
 		Event event = eventMapper.toEvent(eventDto);
         return eventRepository.save(event);
