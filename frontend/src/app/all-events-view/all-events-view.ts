@@ -1,4 +1,13 @@
-import { Component, computed, EventEmitter, Input, Output, signal, Signal, WritableSignal } from "@angular/core";
+import {
+	Component,
+	computed,
+	EventEmitter,
+	Input,
+	Output,
+	signal,
+	Signal,
+	WritableSignal,
+} from "@angular/core";
 import { CreateQueryResult, injectQuery } from "@tanstack/angular-query-experimental";
 import { HttpService } from "../http-service";
 import { EventType, ManualEventData, ManualEventType } from "../types";
@@ -30,8 +39,8 @@ export class AllEventsView {
 
 	year: number = new Date().getFullYear();
 
-	@Input() allEventsData: Signal<ManualEventData[] | undefined> = signal(undefined)
-	@Output() onEventClick = new EventEmitter<ManualEventData>()
+	@Input() allEventsData: Signal<ManualEventData[] | undefined> = signal(undefined);
+	@Output() onEventClick = new EventEmitter<ManualEventData>();
 
 	monthGroups: Signal<MonthGroup[]> = computed(() => {
 		const events = this.allEventsData() || [];

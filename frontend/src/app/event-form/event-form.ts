@@ -1,5 +1,13 @@
 import { Component, EventEmitter, inject, Input, Output } from "@angular/core";
-import { EventDateType, EventType, EventData, CreateEventData, ManualEventType, ManualEventData, UpdateEventData } from "../types";
+import {
+	EventDateType,
+	EventType,
+	EventData,
+	CreateEventData,
+	ManualEventType,
+	ManualEventData,
+	UpdateEventData,
+} from "../types";
 import { FormControl, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { RRule } from "RRule";
 import { dateToString, stringToDate } from "../utils";
@@ -14,8 +22,8 @@ import { ActivatedRoute } from "@angular/router";
 import { BIRTHDAY_SUFFIX } from "../config";
 
 type MutationVars =
-  | { isEdit: false; payload: CreateEventData }
-  | { isEdit: true; payload: UpdateEventData };
+	| { isEdit: false; payload: CreateEventData }
+	| { isEdit: true; payload: UpdateEventData };
 
 @Component({
 	selector: "app-event-form",
@@ -43,11 +51,11 @@ export class EventForm {
 
 	ngOnInit() {
 		if (this.initialData) {
-			this.eventText = this.initialData.eventText
-			this.date = this.initialData.date
-			this.daysNotice = this.initialData.daysNotice
-			this.selectedDateType = this.initialData.dateType
-			this.selectedEventType = this.initialData.eventType
+			this.eventText = this.initialData.eventText;
+			this.date = this.initialData.date;
+			this.daysNotice = this.initialData.daysNotice;
+			this.selectedDateType = this.initialData.dateType;
+			this.selectedEventType = this.initialData.eventType;
 		}
 	}
 
@@ -56,7 +64,7 @@ export class EventForm {
 			if (isEdit) {
 				return this.httpService.updateEvent(payload);
 			}
-			return this.httpService.createNewEvent(payload)
+			return this.httpService.createNewEvent(payload);
 		},
 		onSuccess: () => {
 			this.eventText = "";
@@ -150,23 +158,22 @@ export class EventForm {
 			dateType,
 			daysNotice: this.daysNotice,
 		};
-		
+
 		if (this.isEdit) {
 			if (!this.initialData) {
-				this.setError("Missing initial data for id")
+				this.setError("Missing initial data for id");
 				return;
 			}
 			const updateEventData: UpdateEventData = {
 				id: this.initialData.id,
-				...createEventData
-			}
+				...createEventData,
+			};
 			this.mutation.mutate({ payload: updateEventData, isEdit: true });
 		} else {
 			if (createEventData.eventType === "Birthday" && BIRTHDAY_SUFFIX) {
-				createEventData.eventText += BIRTHDAY_SUFFIX
+				createEventData.eventText += BIRTHDAY_SUFFIX;
 			}
 			this.mutation.mutate({ payload: createEventData, isEdit: false });
 		}
-
 	}
 }

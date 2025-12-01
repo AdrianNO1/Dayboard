@@ -8,12 +8,18 @@
 </button>
 <br />
 @if (showAllEvents) {
-	<app-all-events-view [allEventsData]="allEventsData" (onEventClick)="openEventEditModal($event)"/>
+	<app-all-events-view
+		[allEventsData]="allEventsData"
+		(onEventClick)="openEventEditModal($event)"
+	/>
 }
 
 @if (isEventFormModalOpen) {
 	<app-modal (onClose)="closeNewEventModal()" [width]="'60vw'" [height]="'60vh'">
-		<app-event-form [initialData]="eventFormModalInitialData" [isEdit]="eventFormModalIsEdit"></app-event-form>
+		<app-event-form
+			[initialData]="eventFormModalInitialData"
+			[isEdit]="eventFormModalIsEdit"
+		></app-event-form>
 	</app-modal>
 }
 

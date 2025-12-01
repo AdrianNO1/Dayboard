@@ -21,4 +21,4 @@ export const EVENT_TYPE_STYLES: Record<EventType, Record<string, string>> = {
 	},
 };
 
-export const BIRTHDAY_SUFFIX: string = " har bursdag!!"
+export const BIRTHDAY_SUFFIX: string = " har bursdag!!";

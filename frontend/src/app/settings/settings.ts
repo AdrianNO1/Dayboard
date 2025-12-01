@@ -16,7 +16,7 @@ export class Settings {
 	isEventFormModalOpen = false;
 	showAllEvents: boolean = true;
 	eventFormModalIsEdit: boolean = false;
-	eventFormModalInitialData?: ManualEventData
+	eventFormModalInitialData?: ManualEventData;
 
 	allEventsDataQuery = injectQuery(() => ({
 		queryKey: ["allEventsData"],
@@ -26,7 +26,7 @@ export class Settings {
 	constructor(private httpService: HttpService) {}
 
 	get allEventsData() {
-		return this.allEventsDataQuery.data
+		return this.allEventsDataQuery.data;
 	}
 
 	openNewEventModal() {
@@ -53,12 +53,12 @@ export class Settings {
 	openEventEditModal(clickedEvent: ManualEventData) {
 		this.isEventFormModalOpen = true;
 		this.eventFormModalIsEdit = true;
-		
+
 		const allEventsData = this.allEventsData();
-		const event = allEventsData?.find((e) => e.id === clickedEvent.id)
+		const event = allEventsData?.find((e) => e.id === clickedEvent.id);
 		if (!event) {
-			throw new Error(`Event with id ${clickedEvent.id} not found in ${allEventsData}`)
+			throw new Error(`Event with id ${clickedEvent.id} not found in ${allEventsData}`);
 		}
-		this.eventFormModalInitialData = event
+		this.eventFormModalInitialData = event;
 	}
 }
