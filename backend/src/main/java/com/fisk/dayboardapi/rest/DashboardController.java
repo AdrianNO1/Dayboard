@@ -1,7 +1,6 @@
 package com.fisk.dayboardapi.rest;
 
 import com.fisk.dayboardapi.models.DashboardData;
-import com.fisk.dayboardapi.repo.EventRepository;
 import com.fisk.dayboardapi.service.DashboardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -19,6 +18,7 @@ public class DashboardController {
 	public DashboardData getEvents(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
 		DashboardData dashboardData = new DashboardData();
 		dashboardData.setEvents(dashboardService.getVisibleEvents(date));
+		dashboardData.setDate(date);
 		return dashboardData;
 	}
 }
