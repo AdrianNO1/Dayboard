@@ -5,11 +5,11 @@
 ></app-event-type-selector>
 
 <div class="month-group-container">
-	@for (monthGroup of monthGroups(); track monthGroup) {
+	@for (monthGroup of monthGroups(); track $index) {
 		<div class="month-group">
 			<div class="title">{{ getMonthGroupTitle(monthGroup) }}</div>
 			<div class="events">
-				@for (event of monthGroup.events; track event) {
+				@for (event of monthGroup.events; track $index) {
 					<div class="event" (click)="onEventClick.emit(event)">
 						<div
 							class="circle"

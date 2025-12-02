@@ -42,5 +42,6 @@ export interface EventGroup {
 }
 
 export interface DashboardData {
+	date: Date;
 	events: EventData[];
 }

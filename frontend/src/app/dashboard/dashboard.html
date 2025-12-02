@@ -6,7 +6,7 @@
 	</div>
 	<app-weather></app-weather>
 	<br />
-	@for (groupGroup of groupGroups(); track groupGroup) {
+	@for (groupGroup of groupGroups(); track $index) {
 		<app-card-group [group]="groupGroup"></app-card-group>
 	}
 	@if (dashboardDataQuery.isError()) {

@@ -1,4 +1,4 @@
-@for (option of options; track option) {
+@for (option of options; track $index) {
 	<button
 		class="option-button"
 		[class.selected]="isOptionSelected(option)"

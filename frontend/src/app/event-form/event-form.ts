@@ -21,6 +21,8 @@ import {
 import { ActivatedRoute } from "@angular/router";
 import { BIRTHDAY_SUFFIX } from "../config";
 
+type StatusMessageType = "error" | "success" | "pending" | null;
+
 type MutationVars =
 	| { isEdit: false; payload: CreateEventData }
 	| { isEdit: true; payload: UpdateEventData };
@@ -43,8 +45,8 @@ export class EventForm {
 	eventText: string = "";
 	date: string = "";
 	daysNotice?: number;
-	errorMessage: string = "";
-	successMessage: string = "";
+	statusMessage: string = "";
+	statusMessageType: StatusMessageType = null;
 
 	@Input() initialData?: ManualEventData;
 	@Input() isEdit: boolean = false;
@@ -83,13 +85,13 @@ export class EventForm {
 	}));
 
 	setError(msg: string) {
-		this.errorMessage = msg;
-		this.successMessage = "";
+		this.statusMessage = msg;
+		this.statusMessageType = "error";
 	}
 
 	setSuccess(msg: string) {
-		this.successMessage = msg;
-		this.errorMessage = "";
+		this.statusMessage = msg;
+		this.statusMessageType = "success";
 	}
 
 	setSelectedEventType(type: ManualEventType) {
@@ -144,7 +146,7 @@ export class EventForm {
 					if (date.startsWith("RRULE:")) {
 						date = date.slice("RRULE:".length);
 					}
-					RRule.fromString(date);
+					// RRule.fromString(date);
 				} catch {
 					this.setError("invalid rrule");
 					return;
@@ -175,5 +177,7 @@ export class EventForm {
 			}
 			this.mutation.mutate({ payload: createEventData, isEdit: false });
 		}
+		this.statusMessage = "Pending...";
+		this.statusMessageType = "pending";
 	}
 }

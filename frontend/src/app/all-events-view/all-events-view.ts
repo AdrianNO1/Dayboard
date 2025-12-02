@@ -20,7 +20,7 @@ import {
 	stringToDate,
 	truncateText,
 } from "../utils";
-import { EVENT_TYPE_STYLES } from "../config";
+import { BIRTHDAY_SUFFIX, EVENT_TYPE_STYLES } from "../config";
 
 interface MonthGroup {
 	firstDayOfMonth: Date;
@@ -85,7 +85,10 @@ export class AllEventsView {
 			return "";
 		}
 		const weekday = date.toLocaleDateString("en-US", { weekday: "short" });
-		const eventShortText = event.eventText;
+		let eventShortText = event.eventText;
+		if (event.eventType === "Birthday" && eventShortText.endsWith(BIRTHDAY_SUFFIX)) {
+			eventShortText = eventShortText.slice(0, eventShortText.length - BIRTHDAY_SUFFIX.length)
+		}
 		return `${getOrdinal(date.getDate())} | ${weekday} | ${eventShortText}`;
 	}
 }

@@ -3,8 +3,8 @@ import { RRule } from "RRule";
 
 function stealCards<T>(cardsList: T[], stealFunc: (e: T) => boolean): T[] {
 	const stolen: T[] = [];
-	for (let i = 0; i < cardsList.length; i++) {
-		const card = cardsList[i - stolen.length];
+	for (let i = cardsList.length - 1; i >= 0; i--) {
+		const card = cardsList[i];
 		if (stealFunc(card)) {
 			cardsList.splice(i, 1);
 			stolen.push(card);
