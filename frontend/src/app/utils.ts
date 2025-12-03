@@ -191,3 +191,7 @@ export function truncateText(text: string, maxChars: number, suffix: string = ".
 	}
 	return text;
 }
+
+export function generateRandomKey() {
+	return new Date().toISOString() + "__" + Math.floor(Math.random() * 10 ** 8);
+}
