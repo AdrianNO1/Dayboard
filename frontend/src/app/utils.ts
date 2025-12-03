@@ -1,4 +1,4 @@
-import { EventData, EventGroup, ManualEventData } from "./types";
+import { DashboardData, EventData, EventGroup, ManualEventData } from "./types";
 import { RRule } from "RRule";
 
 function stealCards<T>(cardsList: T[], stealFunc: (e: T) => boolean): T[] {
@@ -17,19 +17,31 @@ export function isManualEvent(e: EventData) {
 	return e.eventType !== "Email";
 }
 
-export function generateGroups(eventData: EventData[], today: Date): EventGroup[] {
+export function generateGroups(data: DashboardData, date: Date): EventGroup[] {
+	const eventData = data.events
 	const manualEvents = eventData.filter(isManualEvent);
-	const normalized = normalizeEventDateToSameDateType(manualEvents, today);
+	const normalized = normalizeEventDateToSameDateType(manualEvents, date);
 
 	const emailEvents = eventData.filter((event) => event.eventType === "Email");
-	const todayEvents = stealCards(normalized, (card) => areDatesOnSameDay(card.date, today));
+	const todayEvents = stealCards(normalized, (card) => areDatesOnSameDay(card.date, date));
 	const tomorrowEvents = stealCards(normalized, (card) =>
-		areDatesOnSameDay(card.date, addDays(today, 1)),
+		areDatesOnSameDay(card.date, addDays(date, 1)),
 	);
+
+	let todayTitle = "Today"
+	let tomorrowTitle = "Tomorrow"
+	if (!areDatesOnSameDay(new Date(), date)) {
+		todayTitle = formatDateAsLongTitle(date)
+		tomorrowTitle = formatDateAsLongTitle(addDays(date, 1))
+	}
+	if (!areDatesOnSameDay(data.date, date)) {
+		todayTitle = "DATE MISMATCH" + "!".repeat(130)
+		tomorrowTitle = todayTitle
+	}
 
 	return [
 		{
-			title: "Today",
+			title: todayTitle,
 			events: todayEvents,
 			showIfEmpty: true,
 		},
@@ -38,7 +50,7 @@ export function generateGroups(eventData: EventData[], today: Date): EventGroup[
 			events: emailEvents,
 		},
 		{
-			title: "Tomorrow",
+			title: tomorrowTitle,
 			events: tomorrowEvents,
 		},
 		{

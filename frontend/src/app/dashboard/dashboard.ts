@@ -46,7 +46,7 @@ export class Dashboard {
 		this.dashboardDataQuery = injectQuery(() => ({
 			queryKey: ["dashboardData"],
 			queryFn: () => httpService.getDashboardData(day),
-			select: (data: DashboardData) => generateGroups(data.events, day),
+			select: (data: DashboardData) => generateGroups(data, day),
 		}));
 
 		this.groupGroups = computed(() => {
