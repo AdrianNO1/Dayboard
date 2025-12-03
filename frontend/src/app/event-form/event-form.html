@@ -43,6 +43,6 @@
 <br />
 <br />
 <button (click)="onSubmit()">{{ getSubmitButtonText() }}</button>
-@if (statusMessage) {
-	<p [class]="statusMessageType">{{ statusMessage }}</p>
+@if (statusMessage(); as msg) {
+	<p [class]="statusMessageType()">{{ msg }}</p>
 }

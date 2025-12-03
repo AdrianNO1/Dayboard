@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, Output } from "@angular/core";
+import { Component, EventEmitter, inject, Input, Output, signal } from "@angular/core";
 import {
 	EventDateType,
 	EventType,
@@ -45,8 +45,8 @@ export class EventForm {
 	eventText: string = "";
 	date: string = "";
 	daysNotice?: number;
-	statusMessage: string = "";
-	statusMessageType: StatusMessageType = null;
+	statusMessage = signal<string>("");
+	statusMessageType = signal<StatusMessageType>(null)
 
 	@Input() initialData?: ManualEventData;
 	@Input() isEdit: boolean = false;
@@ -68,7 +68,8 @@ export class EventForm {
 			}
 			return this.httpService.createNewEvent(payload);
 		},
-		onSuccess: () => {
+		onSuccess: (data) => {
+			console.log(data)
 			this.eventText = "";
 			this.date = "";
 			this.setSuccess("Success!");
@@ -80,18 +81,19 @@ export class EventForm {
 			console.error(error);
 		},
 		onMutate: async () => {
-			this.setError("");
+			this.statusMessage.set("Pending...");
+			this.statusMessageType.set("pending");
 		},
 	}));
 
 	setError(msg: string) {
-		this.statusMessage = msg;
-		this.statusMessageType = "error";
+		this.statusMessage.set(msg);
+		this.statusMessageType.set("error");
 	}
 
 	setSuccess(msg: string) {
-		this.statusMessage = msg;
-		this.statusMessageType = "success";
+		this.statusMessage.set(msg);
+		this.statusMessageType.set("success");
 	}
 
 	setSelectedEventType(type: ManualEventType) {
@@ -177,7 +179,5 @@ export class EventForm {
 			}
 			this.mutation.mutate({ payload: createEventData, isEdit: false });
 		}
-		this.statusMessage = "Pending...";
-		this.statusMessageType = "pending";
 	}
 }
