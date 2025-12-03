@@ -1,5 +1,8 @@
 <div class="dashboard-container">
 	<div class="header">
+		@if (offlineMode()) {
+			<div class="offline-alert">Offline</div>
+		}
 		<button class="settings-button" (click)="openSettings()">
 			<mat-icon>settings</mat-icon>
 		</button>

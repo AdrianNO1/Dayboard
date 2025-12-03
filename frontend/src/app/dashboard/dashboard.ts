@@ -10,6 +10,7 @@ import { CreateQueryResult, injectQuery } from "@tanstack/angular-query-experime
 import { HttpService } from "../http-service";
 import { Weather } from "../weather/weather";
 import { Title } from "@angular/platform-browser";
+import { offlineMode } from "../http-interceptor";
 
 @Component({
 	selector: "app-dashboard",
@@ -22,6 +23,7 @@ export class Dashboard {
 	groupGroups: Signal<EventGroup[]>;
 	isSettingsOpen: boolean = true;
 	dashboardDataQuery: CreateQueryResult<EventGroup[], Error>;
+	offlineMode = offlineMode;
 
 	constructor(
 		private router: Router,
