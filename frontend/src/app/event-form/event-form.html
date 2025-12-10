@@ -43,6 +43,9 @@
 <br />
 <br />
 <button (click)="onSubmit()">{{ getSubmitButtonText() }}</button>
+@if (isEdit) {
+	<button (click)="onDelete()">Delete</button>
+}
 @if (statusMessage(); as msg) {
 	<p [class]="statusMessageType()">{{ msg }}</p>
 }

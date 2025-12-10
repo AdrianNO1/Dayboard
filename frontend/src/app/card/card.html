@@ -3,7 +3,9 @@
 		@if (title) {
 			<div class="title">{{ title }}</div>
 		}
-		<div class="message">{{ data.eventText }}</div>
+		@if (data.eventText) {
+			<div class="message">{{ data.eventText }}</div>
+		}
 	</div>
 
 	@if (contextMenuVisible) {

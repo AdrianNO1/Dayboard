@@ -61,29 +61,49 @@ export class EventForm {
 		}
 	}
 
-	mutation = injectMutation(() => ({
+	private onMutationError = (error: Error) => {
+		this.setError((error as any).error?.message || error.message);
+		console.error(error);
+	}
+
+	private onMutationMutate = async () => {
+		this.statusMessage.set("Pending...");
+		this.statusMessageType.set("pending");
+	}
+
+	saveMutation = injectMutation(() => ({
 		mutationFn: ({ payload, isEdit }: MutationVars) => {
 			if (isEdit) {
-				return this.httpService.updateEvent(payload);
+				const a = this.httpService.updateEvent(payload);
+				console.log(a);
+				return a
 			}
 			return this.httpService.createNewEvent(payload);
 		},
 		onSuccess: (data) => {
-			console.log(data)
 			this.eventText = "";
 			this.date = "";
 			this.setSuccess("Success!");
 			this.queryClient.invalidateQueries({ queryKey: ["dashboardData"] });
 			this.queryClient.invalidateQueries({ queryKey: ["allEventsData"] });
 		},
-		onError: (error) => {
-			this.setError((error as any).error?.message || error.message);
-			console.error(error);
+		onError: this.onMutationError,
+		onMutate: this.onMutationMutate,
+	}));
+
+	deleteMutation = injectMutation(() => ({
+		mutationFn: (eventId: number) => {
+			return this.httpService.deleteEvent(eventId);
 		},
-		onMutate: async () => {
-			this.statusMessage.set("Pending...");
-			this.statusMessageType.set("pending");
+		onSuccess: (data) => {
+			this.eventText = "";
+			this.date = "";
+			this.setSuccess("Deleted!");
+			this.queryClient.invalidateQueries({ queryKey: ["dashboardData"] });
+			this.queryClient.invalidateQueries({ queryKey: ["allEventsData"] });
 		},
+		onError: this.onMutationError,
+		onMutate: this.onMutationMutate,
 	}));
 
 	setError(msg: string) {
@@ -148,7 +168,7 @@ export class EventForm {
 					if (date.startsWith("RRULE:")) {
 						date = date.slice("RRULE:".length);
 					}
-					// RRule.fromString(date);
+					RRule.fromString(date);
 				} catch {
 					this.setError("invalid rrule");
 					return;
@@ -172,12 +192,20 @@ export class EventForm {
 				id: this.initialData.id,
 				...createEventData,
 			};
-			this.mutation.mutate({ payload: updateEventData, isEdit: true });
+			console.log(this.saveMutation.mutate({ payload: updateEventData, isEdit: true }));
 		} else {
 			if (createEventData.eventType === "Birthday" && BIRTHDAY_SUFFIX) {
 				createEventData.eventText += BIRTHDAY_SUFFIX;
 			}
-			this.mutation.mutate({ payload: createEventData, isEdit: false });
+			this.saveMutation.mutate({ payload: createEventData, isEdit: false });
+		}
+	}
+
+	onDelete() {
+		if (this.initialData) {
+			this.deleteMutation.mutate(this.initialData.id)
+		}  else {
+			alert("InitialData not set")
 		}
 	}
 }

@@ -5,14 +5,17 @@ const PENDING_REQUESTS_STORE = "pending_requests";
 const RESPONSE_CACHE_STORE = "response_cache";
 
 export interface PendingRequest {
-	method: string;
 	url: string;
-	body: string;
+	body: Object;
+}
+
+export interface PendingRequestWithKey extends PendingRequest {
+	key: string;
 }
 
 export interface CachedResponse {
 	url: string;
-	response: string;
+	response: Object;
 }
 
 let dbPromise: Promise<IDBPDatabase>;
@@ -33,7 +36,7 @@ export async function getDB() {
 	return dbPromise;
 }
 
-export async function deletePendingRequest(key: string) {
+export async function removePendingRequest(key: string) {
 	const db = await getDB();
 	await db.delete(PENDING_REQUESTS_STORE, key);
 }
@@ -43,13 +46,13 @@ export async function addPendingRequest(pendingRequest: PendingRequest, key?: st
 	if (!key) {
 		key = generateRandomKey();
 	}
-	await db.put(PENDING_REQUESTS_STORE, pendingRequest, key);
+	await db.put(PENDING_REQUESTS_STORE, { ...pendingRequest, key }, key);
 	return key;
 }
 
 export async function getPendingRequests() {
 	const db = await getDB();
-	return await db.getAll(PENDING_REQUESTS_STORE);
+	return await db.getAll(PENDING_REQUESTS_STORE) as PendingRequestWithKey[];
 }
 
 export async function cacheResponse(data: CachedResponse) {

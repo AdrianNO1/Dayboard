@@ -3,10 +3,10 @@ export type ManualEventType = Exclude<EventType, "Email">;
 
 export type EventDateType = "Date" | "Dateyear" | "RRule" | "Custom";
 
-export interface ManualEventData {
+interface EventDataTemplate<T> {
 	id: number;
 	eventText: string;
-	eventType: ManualEventType;
+	eventType: T;
 	date: string;
 	dateType: EventDateType;
 	daysNotice: number;
@@ -14,11 +14,13 @@ export interface ManualEventData {
 	updatedAt: string;
 }
 
+export type ManualEventData = EventDataTemplate<ManualEventType>
+
 export interface Email {
+	eventTitle: string;
 	eventText: string;
-	eventTitle?: string;
 	eventType: "Email";
-	sender: string;
+	link: string;
 }
 
 export type EventData = ManualEventData | Email;
