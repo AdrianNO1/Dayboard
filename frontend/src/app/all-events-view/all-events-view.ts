@@ -13,7 +13,7 @@ import { EventTypeSelector } from "../button-selector/button-selector";
 import {
 	capitalize,
 	formatDateAsShortTitle,
-	getAllEventOccurencesInYear,
+	getAllEventOccurrencesInYear,
 	getOrdinal,
 	stringToDate,
 	truncateText,
@@ -42,7 +42,7 @@ export class AllEventsView {
 
 	monthGroups: Signal<MonthGroup[]> = computed(() => {
 		const events = this.allEventsData() || [];
-		const thisYear = getAllEventOccurencesInYear(events, this.year).filter((e) =>
+		const thisYear = getAllEventOccurrencesInYear(events, this.year).filter((e) =>
 			this.shownEventTypes().includes(e.eventType),
 		);
 

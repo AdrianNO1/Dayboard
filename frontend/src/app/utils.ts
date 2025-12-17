@@ -7,6 +7,7 @@ import {
 	ManualEventData,
 } from "./types";
 import { RRule } from "RRule";
+import { DAYS_IN_YEAR, EMAIL_LOOKBACK_DAYS } from "./constants";
 
 function stealCards<T>(cardsList: T[], stealFunc: (e: T) => boolean): T[] {
 	const stolen: T[] = [];
@@ -95,7 +96,7 @@ export function normalizeEventDateToSameDateType(
 				break;
 			case "RRule":
 				const rrule = RRule.fromString(event.date);
-				const occurrences = rrule.between(addDays(day, -1), addDays(day, event.daysNotice));
+				const occurrences = rrule.between(addDays(day, -1), addDays(day, daysNoticeOverwrite || event.daysNotice));
 				for (const occurence of occurrences) {
 					const eventCopy = deepCopy(event);
 					eventCopy.dateType = "Dateyear";
@@ -108,8 +109,7 @@ export function normalizeEventDateToSameDateType(
 	return normalized;
 }
 
-export function getAllEventOccurencesInYear(eventData: ManualEventData[], year: number) {
-	const DAYS_IN_YEAR = 365;
+export function getAllEventOccurrencesInYear(eventData: ManualEventData[], year: number): ManualEventData[] {
 	const MARGIN = 3;
 	const yearStart = new Date(year, 0, 1);
 	return normalizeEventDateToSameDateType(eventData, yearStart, DAYS_IN_YEAR + MARGIN).filter(
@@ -121,7 +121,7 @@ export function deepCopy<T extends object>(obj: T): T {
 	return JSON.parse(JSON.stringify(obj));
 }
 
-export function areDatesOnSameDay(date1: Date | string | undefined, date2: Date) {
+export function areDatesOnSameDay(date1: Date | string | undefined, date2: Date): boolean {
 	if (!date1 || typeof date1 === "string") {
 		date1 = stringToDate(date1 ?? "");
 		if (!date1) {
@@ -135,7 +135,7 @@ export function areDatesOnSameDay(date1: Date | string | undefined, date2: Date)
 	);
 }
 
-export function addDays(date: Date, days: number) {
+export function addDays(date: Date, days: number): Date {
 	var result = new Date(date);
 	result.setDate(result.getDate() + days);
 	return result;
@@ -173,28 +173,21 @@ export function ensureDate(date: string | Date): Date {
 	return date;
 }
 
-export function getOrdinal(n: number) {
+export function getOrdinal(n: number): string {
 	const s = ["th", "st", "nd", "rd"];
 	const v = n % 100;
 	return n + (s[(v - 20) % 10] || s[v] || s[0]);
 }
 
-export function formatDateAsShortTitle(date: string | Date) {
+export function formatDateAsShortTitle(date: string | Date): string {
 	date = ensureDate(date);
 	const day = date.getDate();
 	let month = date.toLocaleString("en-US", { month: "short" });
 	return `${getOrdinal(day)} ${month}`;
 }
 
-export function formatDateAsLongTitle(date: string | Date) {
+export function formatDateAsLongTitle(date: string | Date): string {
 	date = ensureDate(date);
-	if (typeof date === "string") {
-		const dateOrUndefined = stringToDate(date);
-		if (!dateOrUndefined) {
-			throw new Error("Invalid date");
-		}
-		date = dateOrUndefined;
-	}
 	const day = date.getDate();
 	let month = date.toLocaleString("en-US", { month: "long" });
 	return `${getOrdinal(day)} ${month}`;
@@ -211,6 +204,20 @@ export function truncateText(text: string, maxChars: number, suffix: string = ".
 	return text;
 }
 
-export function generateRandomKey() {
+export function generateRandomKey(): string {
 	return new Date().toISOString() + "__" + Math.floor(Math.random() * 10 ** 8);
+}
+
+export function getEmailUrl(eventTitle: string): string {
+	const searchParam: string = encodeURIComponent(eventTitle);
+	const dateStart = dateToString(addDays(new Date(), -EMAIL_LOOKBACK_DAYS - 1));
+	return `https://mail.google.com/mail/u/0/#advanced-search/query=${searchParam}+++++++&isrefinement=true&datestart=${dateStart}&daterangetype=custom_range`;
+}
+
+export function getEventUrl(event: EventGroupData): string | null {
+	if (event.eventType === "Email") {
+		return getEmailUrl(event.eventText);
+	}
+	const match = event.eventText.match(/\bhttps?:\/\/[^\s<>"')\]]+/i);
+	return match ? match[0] : null;
 }

@@ -18,7 +18,7 @@ export type ManualEventData = EventDataTemplate<EventType>
 
 export interface Email {
 	eventText: string;
-	link: string;
+	sender: string;
 }
 
 export type EventData = ManualEventData;

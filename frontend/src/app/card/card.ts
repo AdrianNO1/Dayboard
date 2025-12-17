@@ -1,6 +1,6 @@
 import { Component, HostListener, Input } from "@angular/core";
 import { EventData, EventGroupData } from "../types";
-import { formatDateAsShortTitle } from "../utils";
+import { formatDateAsShortTitle, getEventUrl } from "../utils";
 import { EVENT_TYPE_STYLES } from "../config";
 
 @Component({
@@ -30,11 +30,15 @@ export class Card {
 		return "";
 	}
 
-	get eventText() {
+	get eventText(): string | undefined {
 		if (this.data?.eventType == "Email") {
-			return null;
+			return undefined;
 		}
 		return this.data?.eventText;
+	}
+
+	get eventHref(): string | null {
+		return this.data ? getEventUrl(this.data) : null;
 	}
 
 	contextMenuVisible = false;

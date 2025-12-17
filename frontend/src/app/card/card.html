@@ -1,12 +1,12 @@
 @if (data) {
-	<div class="card-container" [style]="getEventStyles()" (contextmenu)="onRightClick($event)">
+	<a class="card-container" [style]="getEventStyles()" (contextmenu)="onRightClick($event)" [href]="eventHref" target="_blank" rel="noopener noreferrer">
 		@if (title) {
 			<div class="title">{{ title }}</div>
 		}
 		@if (eventText; as text) {
 			<div class="message">{{ text }}</div>
 		}
-	</div>
+	</a>
 
 	@if (contextMenuVisible) {
 		<div
