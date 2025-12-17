@@ -27,26 +27,16 @@ export class HttpService {
 			return
 		}
 		console.log("Doing ", pendingRequests.length, "pending requests")
-		const pendingHttpPostRequests = []
 		for (const pendingReq of pendingRequests) {
 			const postReq$ = this.http.post(pendingReq.url, pendingReq.body, {
 				headers: {
 					[RETRY_REQUEST_HEADER]: "true"
 				}
 			})
-			pendingHttpPostRequests.push(postReq$)
+			postReq$.subscribe({
+				complete: () => removePendingRequest(pendingReq.key)
+			})
 		}
-		forkJoin(pendingHttpPostRequests).subscribe({
-			next: results => {
-				console.log('All observables completed. Last values:', results);
-			},
-			error: error => {
-				console.error('An observable errored:', error);
-			},
-			complete: () => {
-				console.log('forkJoin completed.');
-			}
-		})
 	}
 
 	createNewEvent(event: CreateEventData) {

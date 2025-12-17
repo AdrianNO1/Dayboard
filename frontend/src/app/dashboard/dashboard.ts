@@ -21,7 +21,7 @@ import { offlineMode } from "../http-interceptor";
 export class Dashboard {
 	dashboardData?: DashboardData;
 	groupGroups: Signal<EventGroup[]>;
-	isSettingsOpen: boolean = true;
+	isSettingsOpen: boolean = false;
 	dashboardDataQuery: CreateQueryResult<EventGroup[], Error>;
 	offlineMode = offlineMode;
 	initialized: boolean = false;
