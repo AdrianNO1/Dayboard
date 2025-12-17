@@ -49,6 +49,7 @@ export class Dashboard {
 			queryKey: ["dashboardData"],
 			queryFn: () => httpService.getDashboardData(day),
 			select: (data: DashboardData) => generateGroups(data, day),
+			staleTime: 5 * 60 * 60 * 1000
 		}));
 
 		this.groupGroups = computed(() => {

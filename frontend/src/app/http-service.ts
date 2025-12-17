@@ -6,22 +6,17 @@ import {
 	Email,
 	EventData,
 	ManualEventData,
-	RawDashboardData,
 	UpdateEventData,
 } from "./types";
 import { firstValueFrom, forkJoin } from "rxjs";
 import { addDays, dateToString } from "./utils";
 import { removePendingRequest, getPendingRequests } from "./indexedDB";
-import { RETRY_REQUEST_HEADER } from "./constants";
+import { DASHBOARD_ENDPOINT, EVENTS_ENDPOINT, RETRY_REQUEST_HEADER } from "./constants";
 
 @Injectable({
 	providedIn: "root",
 })
 export class HttpService {
-	readonly BASE_URL = "http://localhost:8080/api";
-	readonly EVENTS_ENDPOINT = this.BASE_URL + "/events";
-	readonly DASHBOARD_ENDPOINT = this.BASE_URL + "/dashboard";
-
 	constructor(private http: HttpClient) {
 		this.processPendingRequests()
 	}
@@ -41,41 +36,43 @@ export class HttpService {
 			})
 			pendingHttpPostRequests.push(postReq$)
 		}
-		forkJoin(pendingHttpPostRequests).subscribe(
-			results => {
-				console.log('All observables completed. Last values:', results); // Expected: [3, 0, 'c']
+		forkJoin(pendingHttpPostRequests).subscribe({
+			next: results => {
+				console.log('All observables completed. Last values:', results);
 			},
-			error => {
+			error: error => {
 				console.error('An observable errored:', error);
 			},
-			() => {
+			complete: () => {
 				console.log('forkJoin completed.');
 			}
-		)
+		})
 	}
 
 	createNewEvent(event: CreateEventData) {
-		return firstValueFrom(this.http.post(this.EVENTS_ENDPOINT, event));
+		return firstValueFrom(this.http.post(EVENTS_ENDPOINT, event));
 	}
 
 	updateEvent(event: UpdateEventData) {
 		console.log("updating", event)
-		return firstValueFrom(this.http.put(this.EVENTS_ENDPOINT, event));
+		return firstValueFrom(this.http.put(EVENTS_ENDPOINT, event));
 	}
 
 	deleteEvent(eventId: number) {
-		return firstValueFrom(this.http.delete(this.EVENTS_ENDPOINT + "/" + eventId))
+		return firstValueFrom(this.http.delete(EVENTS_ENDPOINT + "/" + eventId))
 	}
 
 	getDashboardData(date: Date): Promise<DashboardData> {
-		return firstValueFrom(
-			this.http.get<RawDashboardData>(this.DASHBOARD_ENDPOINT, {
+		const a = firstValueFrom(
+			this.http.get<DashboardData>(DASHBOARD_ENDPOINT, {
 				params: { date: dateToString(date) },
-			}),
+			})
 		)
+		a.then(console.log)
+		return a
 	}
 
 	getAllEventsData(): Promise<ManualEventData[]> {
-		return firstValueFrom(this.http.get<ManualEventData[]>(this.EVENTS_ENDPOINT));
+		return firstValueFrom(this.http.get<ManualEventData[]>(EVENTS_ENDPOINT));
 	}
 }

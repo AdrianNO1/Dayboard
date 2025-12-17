@@ -1,5 +1,5 @@
 import { Component, HostListener, Input } from "@angular/core";
-import { EventData } from "../types";
+import { EventData, EventGroupData } from "../types";
 import { formatDateAsShortTitle } from "../utils";
 import { EVENT_TYPE_STYLES } from "../config";
 
@@ -10,7 +10,7 @@ import { EVENT_TYPE_STYLES } from "../config";
 	styleUrl: "./card.scss",
 })
 export class Card {
-	@Input() data?: EventData;
+	@Input() data?: EventGroupData;
 
 	get backgroundColor() {
 		return "#2196f3";
@@ -22,12 +22,19 @@ export class Card {
 
 	get title() {
 		if (this.data?.eventType === "Email") {
-			return this.data.eventTitle;
+			return (this.data.sender ? this.data.sender + " - " : "") + this.data.eventText;
 		}
 		if (this.data?.date) {
 			return formatDateAsShortTitle(this.data.date);
 		}
 		return "";
+	}
+
+	get eventText() {
+		if (this.data?.eventType == "Email") {
+			return null;
+		}
+		return this.data?.eventText;
 	}
 
 	contextMenuVisible = false;

@@ -9,19 +9,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @Slf4j
 @SpringBootApplication
-public class DayboardApiApplication implements CommandLineRunner {
-	@Autowired
-	private EmailService emailService;
-
+public class DayboardApiApplication {
     public static void main(String[] args) {
         SpringApplication.run(DayboardApiApplication.class, args);
     }
-
-
-
-	@Override
-    public void run(String... args) throws Exception {
-//		log.info("Heyyyyyyyyy");
-//		emailService.getRecentUnreadEmails();
-	}
 }

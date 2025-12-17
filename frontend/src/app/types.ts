@@ -1,5 +1,5 @@
-export type EventType = "Birthday" | "Reminder" | "Email" | "World";
-export type ManualEventType = Exclude<EventType, "Email">;
+export type ManualEventType = "Birthday" | "Reminder" | "World"
+export type EventType = ManualEventType | "Email"
 
 export type EventDateType = "Date" | "Dateyear" | "RRule" | "Custom";
 
@@ -14,16 +14,14 @@ interface EventDataTemplate<T> {
 	updatedAt: string;
 }
 
-export type ManualEventData = EventDataTemplate<ManualEventType>
+export type ManualEventData = EventDataTemplate<EventType>
 
 export interface Email {
-	eventTitle: string;
 	eventText: string;
-	eventType: "Email";
 	link: string;
 }
 
-export type EventData = ManualEventData | Email;
+export type EventData = ManualEventData;
 
 export interface CreateEventData {
 	eventText: string;
@@ -37,8 +35,15 @@ export interface UpdateEventData extends CreateEventData {
 	id: number;
 }
 
+export interface EventGroupData {
+	eventText: string;
+	eventType: EventType | "Email";
+	date?: string;
+	sender?: string;
+}
+
 export interface EventGroup {
-	events: EventData[];
+	events: EventGroupData[];
 	title: string;
 	showIfEmpty?: boolean;
 }
@@ -46,4 +51,5 @@ export interface EventGroup {
 export interface DashboardData {
 	date: Date;
 	events: EventData[];
+	emails: Email[];
 }

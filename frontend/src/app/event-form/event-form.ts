@@ -2,9 +2,7 @@ import { Component, EventEmitter, inject, Input, Output, signal } from "@angular
 import {
 	EventDateType,
 	EventType,
-	EventData,
 	CreateEventData,
-	ManualEventType,
 	ManualEventData,
 	UpdateEventData,
 } from "../types";
@@ -20,6 +18,7 @@ import {
 } from "../button-selector/button-selector";
 import { ActivatedRoute } from "@angular/router";
 import { BIRTHDAY_SUFFIX } from "../config";
+import { offlineMode } from "../http-interceptor";
 
 type StatusMessageType = "error" | "success" | "pending" | null;
 
@@ -34,11 +33,13 @@ type MutationVars =
 	styleUrl: "./event-form.scss",
 })
 export class EventForm {
+	offlineMode = offlineMode;
+
 	httpService = inject(HttpService);
 	queryClient = inject(QueryClient);
 
-	eventTypeOptions: ManualEventType[] = ["Reminder", "Birthday", "World"];
-	selectedEventType: ManualEventType = this.eventTypeOptions[0];
+	eventTypeOptions: EventType[] = ["Reminder", "Birthday", "World"];
+	selectedEventType: EventType = this.eventTypeOptions[0];
 	dateTypeOptions: EventDateType[] = ["Dateyear", "Date", "RRule", "Custom"];
 	selectedDateType: EventDateType = this.dateTypeOptions[0];
 
@@ -83,7 +84,7 @@ export class EventForm {
 		onSuccess: (data) => {
 			this.eventText = "";
 			this.date = "";
-			this.setSuccess("Success!");
+			this.setSuccess(offlineMode() ? "Queued!" : "Success!");
 			this.queryClient.invalidateQueries({ queryKey: ["dashboardData"] });
 			this.queryClient.invalidateQueries({ queryKey: ["allEventsData"] });
 		},
@@ -116,7 +117,7 @@ export class EventForm {
 		this.statusMessageType.set("success");
 	}
 
-	setSelectedEventType(type: ManualEventType) {
+	setSelectedEventType(type: EventType) {
 		this.selectedEventType = type;
 	}
 

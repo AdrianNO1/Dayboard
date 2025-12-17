@@ -8,9 +8,7 @@ import {
 	Signal,
 	WritableSignal,
 } from "@angular/core";
-import { CreateQueryResult, injectQuery } from "@tanstack/angular-query-experimental";
-import { HttpService } from "../http-service";
-import { EventType, ManualEventData, ManualEventType } from "../types";
+import { EventType, ManualEventData } from "../types";
 import { EventTypeSelector } from "../button-selector/button-selector";
 import {
 	capitalize,
@@ -34,8 +32,8 @@ interface MonthGroup {
 	styleUrl: "./all-events-view.scss",
 })
 export class AllEventsView {
-	allEventTypes: ManualEventType[] = ["Birthday", "Reminder", "World"];
-	shownEventTypes: WritableSignal<ManualEventType[]> = signal(this.allEventTypes);
+	allEventTypes: EventType[] = ["Birthday", "Reminder", "World"];
+	shownEventTypes: WritableSignal<EventType[]> = signal(this.allEventTypes);
 
 	year: number = new Date().getFullYear();
 
@@ -59,7 +57,7 @@ export class AllEventsView {
 		return monthGroups;
 	});
 
-	toggleEventTypeOption(option: ManualEventType) {
+	toggleEventTypeOption(option: EventType) {
 		if (this.shownEventTypes().includes(option)) {
 			this.shownEventTypes.update((shownEventTypes) =>
 				shownEventTypes.filter((e) => e !== option),
@@ -75,7 +73,7 @@ export class AllEventsView {
 		return capitalize(monthName) + " " + date.getFullYear();
 	}
 
-	getMonthEventCircleColor(eventType: ManualEventType): string {
+	getMonthEventCircleColor(eventType: EventType): string {
 		return EVENT_TYPE_STYLES[eventType]["background-color"];
 	}
 

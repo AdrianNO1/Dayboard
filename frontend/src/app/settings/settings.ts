@@ -14,13 +14,14 @@ import { ManualEventData } from "../types";
 })
 export class Settings {
 	isEventFormModalOpen = false;
-	showAllEvents: boolean = true;
+	showAllEvents: boolean = false;
 	eventFormModalIsEdit: boolean = false;
 	eventFormModalInitialData?: ManualEventData;
 
 	allEventsDataQuery = injectQuery(() => ({
 		queryKey: ["allEventsData"],
 		queryFn: () => this.httpService.getAllEventsData(),
+		staleTime: 5 * 60 * 60 * 1000
 	}));
 
 	constructor(private httpService: HttpService) {}
@@ -29,28 +30,25 @@ export class Settings {
 		return this.allEventsDataQuery.data;
 	}
 
-	openNewEventModal() {
+	openNewEventModal(): void {
 		this.isEventFormModalOpen = true;
 		this.eventFormModalIsEdit = false;
 		this.eventFormModalInitialData = undefined;
 	}
 
-	closeNewEventModal() {
+	closeNewEventModal(): void {
 		this.isEventFormModalOpen = false;
 	}
 
-	getToggleEventsButtonText() {
-		if (this.showAllEvents) {
-			return "Hide all events";
-		}
-		return "Show all events";
-	}
-
-	toggleShowEvents() {
+	toggleShowEvents(): void {
 		this.showAllEvents = !this.showAllEvents;
 	}
 
-	openEventEditModal(clickedEvent: ManualEventData) {
+	getToggleEventsButtonText(): string {
+		return this.showAllEvents ? "Hide all events" : "Show all events";
+	}
+
+	openEventEditModal(clickedEvent: ManualEventData): void {
 		this.isEventFormModalOpen = true;
 		this.eventFormModalIsEdit = true;
 

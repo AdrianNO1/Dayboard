@@ -6,6 +6,7 @@ import lombok.Data;
 
 @Data
 public class EventDto {
+	private Integer id;
 	private EventType eventType;
 	private DateType dateType;
 	private String eventText;

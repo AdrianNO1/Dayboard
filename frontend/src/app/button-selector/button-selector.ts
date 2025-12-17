@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from "@angular/core";
-import { EventDateType, ManualEventType } from "../types";
+import { EventDateType, EventType } from "../types";
 
 const styleUrl = "./button-selector.scss";
 const templateUrl = "./button-selector.html";
@@ -31,7 +31,7 @@ export class ButtonSelector<T> {
 	templateUrl,
 	styleUrl,
 })
-export class EventTypeSelector extends ButtonSelector<ManualEventType> {}
+export class EventTypeSelector extends ButtonSelector<EventType> {}
 
 @Component({
 	selector: "app-event-date-type-selector",

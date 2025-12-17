@@ -9,4 +9,5 @@ import java.util.List;
 public class DashboardData {
 	LocalDate date;
 	List<Event> events;
+	List<Email> emails;
 }

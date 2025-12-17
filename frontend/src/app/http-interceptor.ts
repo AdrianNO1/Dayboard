@@ -8,8 +8,8 @@ import {
 import { signal } from "@angular/core";
 import { catchError, from, mergeMap, of, tap, throwError } from "rxjs";
 import { addPendingRequest, CachedResponse, cacheResponse, removePendingRequest, getCachedResponse, PendingRequest } from "./indexedDB";
-import { generateRandomKey } from "./utils";
-import { RETRY_REQUEST_HEADER } from "./constants";
+import { dateToString, generateRandomKey } from "./utils";
+import { DASHBOARD_ENDPOINT, EVENTS_ENDPOINT, RETRY_REQUEST_HEADER } from "./constants";
 
 export const offlineMode = signal<boolean>(false)
 
@@ -55,8 +55,8 @@ export const httpInterceptor: HttpInterceptorFn = (req, next) => {
 				})
 			);
 		case "GET":
-			const isDashboardReq = req.url.endsWith("/api/dashboard")
-			if (isDashboardReq || req.url.endsWith("/api/events")) {
+			const isDashboardReq = req.url.endsWith(DASHBOARD_ENDPOINT);
+			if (isDashboardReq || req.url.endsWith(EVENTS_ENDPOINT)) {
 				const cacheRequestData = async (data: any) => {
 					const cacheData: CachedResponse = {
 						url: req.url,
@@ -77,6 +77,11 @@ export const httpInterceptor: HttpInterceptorFn = (req, next) => {
 						}
 						return from(getCachedResponse(req.url)).pipe(
 							mergeMap(cached => {
+								if (req.url.endsWith(DASHBOARD_ENDPOINT) && req.params.get("date") !== dateToString(new Date())) {
+									if (cached?.response?.emails) {
+										cached.response.emails = [];
+									}
+								}
 								if (cached) {
 									const response = new HttpResponse({
 										body: cached.response,
@@ -84,6 +89,7 @@ export const httpInterceptor: HttpInterceptorFn = (req, next) => {
 										statusText: "OK",
 										url: req.urlWithParams
 									})
+									console.log("Using offline mode")
 									offlineMode.set(true)
 									return of(response)
 								}

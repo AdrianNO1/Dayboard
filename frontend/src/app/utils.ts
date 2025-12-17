@@ -1,4 +1,11 @@
-import { DashboardData, EventData, EventGroup, ManualEventData } from "./types";
+import {
+	DashboardData,
+	Email,
+	EventData,
+	EventGroup,
+	EventGroupData,
+	ManualEventData,
+} from "./types";
 import { RRule } from "RRule";
 
 function stealCards<T>(cardsList: T[], stealFunc: (e: T) => boolean): T[] {
@@ -13,20 +20,19 @@ function stealCards<T>(cardsList: T[], stealFunc: (e: T) => boolean): T[] {
 	return stolen;
 }
 
-export function isManualEvent(e: EventData) {
-	return e.eventType !== "Email";
-}
 
 export function generateGroups(data: DashboardData, date: Date): EventGroup[] {
 	const eventData = data.events
-	const manualEvents = eventData.filter(isManualEvent);
-	const normalized = normalizeEventDateToSameDateType(manualEvents, date);
+	const normalized = normalizeEventDateToSameDateType(eventData, date);
 
-	const emailEvents = eventData.filter((event) => event.eventType === "Email");
 	const todayEvents = stealCards(normalized, (card) => areDatesOnSameDay(card.date, date));
 	const tomorrowEvents = stealCards(normalized, (card) =>
 		areDatesOnSameDay(card.date, addDays(date, 1)),
 	);
+
+	const emailEvents: EventGroupData[] = data.emails.map((email: Email) => {
+		return {...email, eventType: "Email"}
+	})
 
 	let todayTitle = "Today"
 	let tomorrowTitle = "Tomorrow"
@@ -38,6 +44,7 @@ export function generateGroups(data: DashboardData, date: Date): EventGroup[] {
 		todayTitle = "DATE MISMATCH" + "!".repeat(130)
 		tomorrowTitle = todayTitle
 	}
+
 
 	return [
 		{
