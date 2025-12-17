@@ -2,7 +2,7 @@
 	<div class="title">{{ title }}</div>
 
 	@if (cards.length === 0) {
-		<p class="nothing">Nothing ever happens</p>
+		<p class="nothing">Nothing</p>
 	} @else {
 		<div class="card-group">
 			@for (card of cards; track $index) {

@@ -21,6 +21,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
+import static com.fisk.dayboardapi.config.EmailConfig.EMAIL_LOOKBACK_DAYS;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Slf4j
@@ -56,7 +57,7 @@ public class EmailService {
 		inbox.open(Folder.READ_ONLY);
 
 		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.DAY_OF_MONTH, -2);
+		cal.add(Calendar.DAY_OF_MONTH, EMAIL_LOOKBACK_DAYS);
 		cal.set(Calendar.HOUR_OF_DAY, 0);
 		cal.set(Calendar.MINUTE, 0);
 		cal.set(Calendar.SECOND, 0);
@@ -66,11 +67,11 @@ public class EmailService {
 
 		SearchTerm newerThan = new ReceivedDateTerm(ComparisonTerm.GE, twoDaysAgo);
 
-//		Flags seen = new Flags(Flags.Flag.SEEN);
-//		SearchTerm unseen = new FlagTerm(seen, false);
-//		SearchTerm searchFilter = new AndTerm(newerThan, unseen);
+		Flags seen = new Flags(Flags.Flag.SEEN);
+		SearchTerm unseen = new FlagTerm(seen, false);
+		SearchTerm searchFilter = new AndTerm(newerThan, unseen);
 
-		Message[] messages = inbox.search(newerThan);
+		Message[] messages = inbox.search(searchFilter);
 
 		if (filter) {
 			return filterMessages(messages);
@@ -152,7 +153,6 @@ public class EmailService {
 
 	private Message[] filterMessages(Message[] messages) {
 		String[] flags = Arrays.stream(asString(gmailFlagsResource).split("\\R")).map(flag -> flag.trim().toLowerCase(Locale.ROOT).split(" # ", 2)[0]).toArray(String[]::new);
-		log.info(Arrays.toString(flags));
 		return Arrays.stream(messages).filter(msg -> {
 			try {
 				String address = addressesToString(msg.getFrom(), false).toLowerCase(Locale.ROOT);
