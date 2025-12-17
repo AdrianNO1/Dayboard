@@ -204,7 +204,9 @@ export class EventForm {
 
 	onDelete() {
 		if (this.initialData) {
-			this.deleteMutation.mutate(this.initialData.id)
+			if (confirm("Are you sure you want to delete this event?\n" + this.initialData.eventText)) {
+				this.deleteMutation.mutate(this.initialData.id)
+			}
 		}  else {
 			alert("InitialData not set")
 		}
