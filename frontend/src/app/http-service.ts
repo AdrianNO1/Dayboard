@@ -62,10 +62,10 @@ export class HttpService {
 		return firstValueFrom(this.http.delete(EVENTS_ENDPOINT + "/" + eventId))
 	}
 
-	getDashboardData(date: Date): Promise<DashboardData> {
+	getDashboardData(date: Date, fetchEmails: boolean): Promise<DashboardData> {
 		const a = firstValueFrom(
 			this.http.get<DashboardData>(DASHBOARD_ENDPOINT, {
-				params: { date: dateToString(date) },
+				params: { date: dateToString(date), fetchEmails },
 			})
 		)
 		a.then(console.log)

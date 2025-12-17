@@ -24,6 +24,7 @@ export class Dashboard {
 	isSettingsOpen: boolean = true;
 	dashboardDataQuery: CreateQueryResult<EventGroup[], Error>;
 	offlineMode = offlineMode;
+	initialized: boolean = false;
 
 	constructor(
 		private router: Router,
@@ -47,8 +48,20 @@ export class Dashboard {
 
 		this.dashboardDataQuery = injectQuery(() => ({
 			queryKey: ["dashboardData"],
-			queryFn: () => httpService.getDashboardData(day),
-			select: (data: DashboardData) => generateGroups(data, day),
+			queryFn: () => {
+				if (this.initialized) {
+					return httpService.getDashboardData(day, false)
+				}
+				return httpService.getDashboardData(day, true)
+			},
+			select: (data: DashboardData) => {
+				if (this.initialized && this.dashboardData) {
+					data.emails = [...this.dashboardData.emails];
+				}
+				this.initialized = true;
+				this.dashboardData = data
+				return generateGroups(data, day)
+			},
 			staleTime: 5 * 60 * 60 * 1000
 		}));
 

@@ -29,7 +29,7 @@ public class DashboardController {
 	private EmailService emailService;
 
 	@GetMapping
-	public DashboardData getEvents(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+	public DashboardData getEvents(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, @RequestParam boolean fetchEmails) {
 		DashboardData dashboardData = new DashboardData();
 		dashboardData.setDate(date);
 		dashboardData.setEmails(new ArrayList<>());
@@ -37,7 +37,7 @@ public class DashboardController {
 		List<Event> events = dashboardService.getVisibleEvents(date);
 		dashboardData.setEvents(events);
 
-		if (date.equals(LocalDate.now())) {
+		if (fetchEmails && date.equals(LocalDate.now())) {
 			try {
 				Message[] unreadEmails = emailService.getRecentUnreadEmails();
 				List<Email> emails = Arrays.stream(unreadEmails).map(EmailService::messageToEmail).toList();
