@@ -3,7 +3,6 @@ package com.fisk.dayboardapi.service;
 import com.fisk.dayboardapi.models.Email;
 import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
-import jakarta.mail.internet.MimeMessage;
 import jakarta.mail.search.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,10 +14,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.UncheckedIOException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.*;
 
 import static com.fisk.dayboardapi.config.EmailConfig.EMAIL_LOOKBACK_DAYS;
@@ -152,14 +147,22 @@ public class EmailService {
 	}
 
 	private Message[] filterMessages(Message[] messages) {
+		log.info(asString(gmailFlagsResource));
 		String[] flags = Arrays.stream(asString(gmailFlagsResource).split("\\R")).map(flag -> flag.trim().toLowerCase(Locale.ROOT).split(" # ", 2)[0]).toArray(String[]::new);
+		if (flags.length == 0) {
+			log.info("Could not find flags file. Defaulting to showing everything");
+			flags = null;
+		}
+		String[] finalFlags = flags;
 		return Arrays.stream(messages).filter(msg -> {
 			try {
 				String address = addressesToString(msg.getFrom(), false).toLowerCase(Locale.ROOT);
 				String content = getMessageContent(msg).toLowerCase(Locale.ROOT);
 				String[] toHeaderContent = msg.getHeader("To");
-
-				for (String flag : flags) {
+				if (finalFlags == null) {
+					return true;
+				}
+				for (String flag : finalFlags) {
 					if (flag.isEmpty()) continue;
 					if (flag.contains("@")) {
 						if (address.contains(flag)) {
@@ -184,6 +187,9 @@ public class EmailService {
 	}
 
 	private static String asString(Resource resource) {
+		if (!resource.exists()) {
+			return "";
+		}
 		try (Reader reader = new InputStreamReader(resource.getInputStream(), UTF_8)) {
 			return FileCopyUtils.copyToString(reader);
 		} catch (IOException e) {

@@ -35,3 +35,4 @@ build/
 ### Stuff ###
 .env*
 data/
+gmailFlags.txt

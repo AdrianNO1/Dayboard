@@ -1,0 +1,3 @@
+# This is an example file. Please rename it to gmailFlags.txt for it to be used.
+ticket 123456789 # For each line if any email contains the text, it will be shown.
+example@gmail.com # If you include an @ on a line, it will treat that as an email address and check if the sender email address matches.
