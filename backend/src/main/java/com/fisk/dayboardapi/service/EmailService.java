@@ -147,7 +147,6 @@ public class EmailService {
 	}
 
 	private Message[] filterMessages(Message[] messages) {
-		log.info(asString(gmailFlagsResource));
 		String[] flags = Arrays.stream(asString(gmailFlagsResource).split("\\R")).map(flag -> flag.trim().toLowerCase(Locale.ROOT).split(" # ", 2)[0]).toArray(String[]::new);
 		if (flags.length == 0) {
 			log.info("Could not find flags file. Defaulting to showing everything");
