@@ -1,7 +1,9 @@
 @for (option of options; track $index) {
 	<button
+		type="button"
 		class="option-button"
 		[class.selected]="isOptionSelected(option)"
+		[attr.aria-pressed]="isOptionSelected(option)"
 		(click)="selectOption(option)"
 	>
 		{{ option }}

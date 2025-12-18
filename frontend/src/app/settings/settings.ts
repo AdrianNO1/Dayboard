@@ -13,11 +13,15 @@ import { ManualEventData } from "../types";
 	styleUrl: "./settings.scss",
 })
 export class Settings {
-	isEventFormModalOpen = false;
-	showAllEvents: boolean = false;
+	// Modal state
+	isEventFormModalOpen: boolean = false;
 	eventFormModalIsEdit: boolean = false;
 	eventFormModalInitialData?: ManualEventData;
 
+	// View state
+	showAllEvents: boolean = false;
+
+	// Data query
 	allEventsDataQuery = injectQuery(() => ({
 		queryKey: ["allEventsData"],
 		queryFn: () => this.httpService.getAllEventsData(),
@@ -28,6 +32,10 @@ export class Settings {
 
 	get allEventsData() {
 		return this.allEventsDataQuery.data;
+	}
+
+	get toggleEventsButtonText(): string {
+		return this.showAllEvents ? "Hide all events" : "Show all events";
 	}
 
 	openNewEventModal(): void {
@@ -44,10 +52,6 @@ export class Settings {
 		this.showAllEvents = !this.showAllEvents;
 	}
 
-	getToggleEventsButtonText(): string {
-		return this.showAllEvents ? "Hide all events" : "Show all events";
-	}
-
 	openEventEditModal(clickedEvent: ManualEventData): void {
 		this.isEventFormModalOpen = true;
 		this.eventFormModalIsEdit = true;
@@ -55,7 +59,7 @@ export class Settings {
 		const allEventsData = this.allEventsData();
 		const event = allEventsData?.find((e) => e.id === clickedEvent.id);
 		if (!event) {
-			throw new Error(`Event with id ${clickedEvent.id} not found in ${allEventsData}`);
+			throw new Error(`Event with id ${clickedEvent.id} not found`);
 		}
 		this.eventFormModalInitialData = event;
 	}

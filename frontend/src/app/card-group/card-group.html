@@ -1,12 +1,12 @@
 @if (cards.length > 0 || group?.showIfEmpty) {
-	<div class="title">{{ title }}</div>
+	<div class="title" role="heading" aria-level="2">{{ title }}</div>
 
 	@if (cards.length === 0) {
-		<p class="nothing">Nothing</p>
+		<p class="nothing" aria-live="polite">Nothing</p>
 	} @else {
-		<div class="card-group">
+		<div class="card-group" role="list">
 			@for (card of cards; track $index) {
-				<app-card [data]="card"></app-card>
+				<app-card [data]="card" role="listitem"></app-card>
 			}
 		</div>
 	}

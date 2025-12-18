@@ -19,12 +19,15 @@ import { offlineMode } from "../http-interceptor";
 	styleUrl: "./dashboard.scss",
 })
 export class Dashboard {
+	// State
 	dashboardData?: DashboardData;
-	groupGroups: Signal<EventGroup[]>;
 	isSettingsOpen: boolean = false;
-	dashboardDataQuery: CreateQueryResult<EventGroup[], Error>;
-	offlineMode = offlineMode;
 	initialized: boolean = false;
+	offlineMode = offlineMode;
+
+	// Data query
+	dashboardDataQuery: CreateQueryResult<EventGroup[], Error>;
+	groupGroups: Signal<EventGroup[]>;
 
 	constructor(
 		private router: Router,
@@ -35,7 +38,7 @@ export class Dashboard {
 		const dateParam = new URLSearchParams(window.location.search).get("date");
 		let day = (dateParam && stringToDate(dateParam)) || new Date();
 
-		if (dateParam != dateToString(day)) {
+		if (dateParam !== dateToString(day)) {
 			const dayString = dateToString(day);
 			this.router.navigate([], {
 				relativeTo: this.route,
@@ -50,17 +53,17 @@ export class Dashboard {
 			queryKey: ["dashboardData"],
 			queryFn: () => {
 				if (this.initialized) {
-					return httpService.getDashboardData(day, false)
+					return httpService.getDashboardData(day, false);
 				}
-				return httpService.getDashboardData(day, true)
+				return httpService.getDashboardData(day, true);
 			},
 			select: (data: DashboardData) => {
 				if (this.initialized && this.dashboardData) {
 					data.emails = [...this.dashboardData.emails];
 				}
 				this.initialized = true;
-				this.dashboardData = data
-				return generateGroups(data, day)
+				this.dashboardData = data;
+				return generateGroups(data, day);
 			},
 			staleTime: 5 * 60 * 60 * 1000
 		}));
@@ -70,11 +73,11 @@ export class Dashboard {
 		});
 	}
 
-	openSettings() {
+	openSettings(): void {
 		this.isSettingsOpen = true;
 	}
 
-	closeSettings() {
+	closeSettings(): void {
 		this.isSettingsOpen = false;
 	}
 }

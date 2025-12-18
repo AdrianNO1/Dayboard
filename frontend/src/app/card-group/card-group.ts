@@ -11,11 +11,11 @@ import { EventGroup } from "../types";
 export class CardGroup {
 	@Input() group?: EventGroup;
 
-	get title() {
+	get title(): string {
 		return this.group?.title || "";
 	}
 
-	get cards() {
+	get cards(): EventGroup["events"] {
 		return this.group?.events || [];
 	}
 }

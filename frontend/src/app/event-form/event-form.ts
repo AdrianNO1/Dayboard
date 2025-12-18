@@ -7,7 +7,7 @@ import {
 	UpdateEventData,
 } from "../types";
 import { FormControl, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
-import { RRule } from "RRule";
+import { RRule } from "rrule";
 import { dateToString, stringToDate } from "../utils";
 import { injectMutation, QueryClient } from "@tanstack/angular-query-experimental";
 import { HttpService } from "../http-service";

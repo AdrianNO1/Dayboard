@@ -1,12 +1,12 @@
-<div class="modal-overlay" (click)="close()">
+<div class="modal-overlay" (click)="close()" role="dialog" aria-modal="true">
 	<div
 		class="modal-container"
 		[class.barebones]="barebonesModal"
 		[style.width]="width"
 		[style.height]="height"
 	>
-		@if (!barebonesModal) {
-			<button class="modal-close" (click)="close()">&times;</button>
+		@if (!barebonesModal && showModalCloseButton) {
+			<button type="button" class="modal-close" (click)="close()" aria-label="Close modal">&times;</button>
 		}
 		<div class="modal-content" (click)="$event.stopPropagation()">
 			<ng-content></ng-content>

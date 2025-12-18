@@ -6,7 +6,7 @@ import {
 	EventGroupData,
 	ManualEventData,
 } from "./types";
-import { RRule } from "RRule";
+import { RRule } from "rrule";
 import { DAYS_IN_YEAR, EMAIL_LOOKBACK_DAYS } from "./constants";
 
 function stealCards<T>(cardsList: T[], stealFunc: (e: T) => boolean): T[] {

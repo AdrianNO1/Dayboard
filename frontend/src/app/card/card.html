@@ -1,5 +1,13 @@
 @if (data) {
-	<a class="card-container" [style]="getEventStyles()" (contextmenu)="onRightClick($event)" [href]="eventHref" target="_blank" rel="noopener noreferrer">
+	<a 
+		class="card-container" 
+		[style]="getEventStyles()" 
+		(contextmenu)="onRightClick($event)" 
+		[href]="eventHref" 
+		[attr.aria-label]="title"
+		target="_blank" 
+		rel="noopener noreferrer"
+	>
 		@if (title) {
 			<div class="title">{{ title }}</div>
 		}
@@ -11,6 +19,7 @@
 	@if (contextMenuVisible) {
 		<div
 			class="context-menu"
+			role="menu"
 			[style.top]="contextMenuY + 'px'"
 			[style.left]="contextMenuX + 'px'"
 			(click)="onSnooze()"

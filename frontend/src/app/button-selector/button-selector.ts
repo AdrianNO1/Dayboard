@@ -3,7 +3,7 @@ import { EventDateType, EventType } from "../types";
 
 const styleUrl = "./button-selector.scss";
 const templateUrl = "./button-selector.html";
-const imports: any = [];
+const imports: any[] = [];
 
 @Component({
 	selector: "app-button-selector",
@@ -16,11 +16,11 @@ export class ButtonSelector<T> {
 	@Input() selectedOptions: T[] = [];
 	@Output() optionClicked = new EventEmitter<T>();
 
-	selectOption(option: T) {
+	selectOption(option: T): void {
 		this.optionClicked.emit(option);
 	}
 
-	isOptionSelected(option: T) {
+	isOptionSelected(option: T): boolean {
 		return this.selectedOptions.includes(option);
 	}
 }

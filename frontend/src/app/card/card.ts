@@ -10,17 +10,16 @@ import { EVENT_TYPE_STYLES } from "../config";
 	styleUrl: "./card.scss",
 })
 export class Card {
+	// Inputs
 	@Input() data?: EventGroupData;
 
-	get backgroundColor() {
-		return "#2196f3";
-	}
+	// Context menu state
+	contextMenuVisible: boolean = false;
+	contextMenuX: number = 0;
+	contextMenuY: number = 0;
 
-	get textColor() {
-		return null;
-	}
-
-	get title() {
+	// Computed properties
+	get title(): string {
 		if (this.data?.eventType === "Email") {
 			return (this.data.sender ? this.data.sender + " - " : "") + this.data.eventText;
 		}
@@ -31,7 +30,7 @@ export class Card {
 	}
 
 	get eventText(): string | undefined {
-		if (this.data?.eventType == "Email") {
+		if (this.data?.eventType === "Email") {
 			return undefined;
 		}
 		return this.data?.eventText;
@@ -41,11 +40,8 @@ export class Card {
 		return this.data ? getEventUrl(this.data) : null;
 	}
 
-	contextMenuVisible = false;
-	contextMenuX = 0;
-	contextMenuY = 0;
-
-	onRightClick(event: MouseEvent) {
+	// Event handlers
+	onRightClick(event: MouseEvent): void {
 		event.preventDefault();
 		this.contextMenuVisible = true;
 		this.contextMenuX = event.clientX;
@@ -53,16 +49,17 @@ export class Card {
 	}
 
 	@HostListener("document:click")
-	hideMenu() {
+	hideMenu(): void {
 		this.contextMenuVisible = false;
 	}
 
-	onSnooze() {
-		console.log("snooozed");
+	onSnooze(): void {
+		console.log("snoozed");
 		this.hideMenu();
 	}
 
-	getEventStyles() {
+	// Style helper
+	getEventStyles(): Record<string, string> | null {
 		return this.data ? EVENT_TYPE_STYLES[this.data.eventType] : null;
 	}
 }
