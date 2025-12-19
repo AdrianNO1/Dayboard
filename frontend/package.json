@@ -37,6 +37,7 @@
 		"@angular/service-worker": "^20.2.0",
 		"@tanstack/angular-query-experimental": "^5.90.12",
 		"@tanstack/query-core": "^5.90.10",
+		"astronomy-engine": "^2.1.19",
 		"idb": "^8.0.3",
 		"rrule": "^2.8.1",
 		"rxjs": "~7.8.0",

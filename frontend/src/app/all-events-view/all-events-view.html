@@ -10,10 +10,10 @@
 			<div class="title">{{ getMonthGroupTitle(monthGroup) }}</div>
 			<div class="events">
 				@for (event of monthGroup.events; track $index) {
-					<div class="event" (click)="onEventClick.emit(event)">
+					<div class="event" (click)="onEventClick.emit(event)" [title]="event.eventText">
 						<div
 							class="circle"
-							[style.backgroundColor]="getMonthEventCircleColor(event.eventType)"
+							[style.background-color]="getMonthEventCircleColor(event.eventType)"
 						></div>
 						<div class="desc">{{ getMonthEventDateText(event) }}</div>
 					</div>
