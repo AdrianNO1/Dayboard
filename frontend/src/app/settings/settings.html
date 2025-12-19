@@ -1,12 +1,12 @@
 <h1 class="title">Settings</h1>
 
-<button class="new-button" (click)="openNewEventModal()">New</button>
-<br />
-<br />
-<button class="toggle-all-events" (click)="toggleShowEvents()">
-	{{ getToggleEventsButtonText() }}
-</button>
-<br />
+<div class="settings-actions">
+	<button class="btn btn-primary" (click)="openNewEventModal()">New Event</button>
+	<button class="btn btn-secondary" (click)="toggleShowEvents()">
+		{{ getToggleEventsButtonText() }}
+	</button>
+</div>
+
 @if (showAllEvents) {
 	<app-all-events-view
 		[allEventsData]="allEventsData"

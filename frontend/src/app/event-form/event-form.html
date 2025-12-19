@@ -1,4 +1,4 @@
-<h2>{{ getTitleText() }}</h2>
+<h2 class="form-title">{{ getTitleText() }}</h2>
 
 <app-event-type-selector
 	(optionClicked)="setSelectedEventType($event)"
@@ -6,46 +6,51 @@
 	[options]="eventTypeOptions"
 />
 
-<br />
-<br />
-@if (selectedEventType === "Birthday") {
-	<div>Who:</div>
-} @else {
-	<div>Event:</div>
-}
-<textarea [(ngModel)]="eventText"></textarea>
+<div class="form-group">
+	@if (selectedEventType === "Birthday") {
+		<label class="form-label">Who:</label>
+	} @else {
+		<label class="form-label">Event:</label>
+	}
+	<textarea class="form-input" [(ngModel)]="eventText"></textarea>
+</div>
 
-<div>Date:</div>
-<app-event-date-type-selector
-	(optionClicked)="setSelectedDateType($event)"
-	[selectedOptions]="[selectedDateType]"
-	[options]="dateTypeOptions"
-/>
+<div class="form-group">
+	<label class="form-label">Date:</label>
+	<app-event-date-type-selector
+		(optionClicked)="setSelectedDateType($event)"
+		[selectedOptions]="[selectedDateType]"
+		[options]="dateTypeOptions"
+	/>
+	
+	@switch (selectedDateType) {
+		@case ("Dateyear") {
+			<input class="form-input" type="date" [(ngModel)]="date" />
+		}
+		@case ("Date") {
+			<textarea class="form-input" [(ngModel)]="date" placeholder="DD-MM"></textarea>
+		}
+		@case ("RRule") {
+			<textarea class="form-input" [(ngModel)]="date" placeholder="RRule"></textarea>
+		}
+		@case ("Custom") {
+			<textarea class="form-input" [(ngModel)]="date" placeholder="Custom"></textarea>
+		}
+	}
+</div>
 
-<br />
-@switch (selectedDateType) {
-	@case ("Dateyear") {
-		<input type="date" [(ngModel)]="date" />
-	}
-	@case ("Date") {
-		<textarea [(ngModel)]="date" placeholder="DD-MM"></textarea>
-	}
-	@case ("RRule") {
-		<textarea [(ngModel)]="date" placeholder="RRule"></textarea>
-	}
-	@case ("Custom") {
-		<textarea [(ngModel)]="date" placeholder="Custom"></textarea>
-	}
-}
+<div class="form-group">
+	<label class="form-label">Days notice:</label>
+	<input class="form-input" type="number" min="1" [(ngModel)]="daysNotice" />
+</div>
 
-<div>Days notice:</div>
-<input type="number" min="1" [(ngModel)]="daysNotice" />
-<br />
-<br />
-<button (click)="onSubmit()">{{ getSubmitButtonText() }}</button>
-@if (isEdit) {
-	<button (click)="onDelete()">Delete</button>
-}
+<div class="form-actions">
+	<button class="btn btn-primary" (click)="onSubmit()">{{ getSubmitButtonText() }}</button>
+	@if (isEdit) {
+		<button class="btn btn-danger" (click)="onDelete()">Delete</button>
+	}
+</div>
+
 @if (statusMessage(); as msg) {
 	<p [class]="statusMessageType()">{{ msg }}</p>
 }
