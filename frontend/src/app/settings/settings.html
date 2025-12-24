@@ -19,6 +19,7 @@
 		<app-event-form
 			[initialData]="eventFormModalInitialData"
 			[isEdit]="eventFormModalIsEdit"
+			(onClose)="closeNewEventModal()"
 		></app-event-form>
 	</app-modal>
 }

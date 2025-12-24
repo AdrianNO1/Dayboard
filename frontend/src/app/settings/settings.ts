@@ -21,7 +21,7 @@ export class Settings {
 	allEventsDataQuery = injectQuery(() => ({
 		queryKey: ["allEventsData"],
 		queryFn: () => this.httpService.getAllEventsData(),
-		staleTime: 5 * 60 * 60 * 1000
+		refetchOnWindowFocus: false,
 	}));
 
 	constructor(private httpService: HttpService) {}

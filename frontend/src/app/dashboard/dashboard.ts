@@ -62,7 +62,7 @@ export class Dashboard {
 				this.dashboardData = data
 				return generateGroups(data, day)
 			},
-			staleTime: 5 * 60 * 60 * 1000
+			refetchOnWindowFocus: false,
 		}));
 
 		this.groupGroups = computed(() => {

@@ -18,17 +18,17 @@ public class ValidationService {
 		switch (dateType) {
 			case Dateyear:
 				if (!isValidIsoDate(date)) {
-					throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Date is not valid ISO");
+					throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Date " + date + " is not valid ISO");
 				}
 				break;
 			case Date:
 				if (!isValidDayMonth(date)) {
-					throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Date is not valid day month date");
+					throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Date " + date + " is not valid day month date");
 				}
 				break;
 			case RRule:
 				if (!isValidRRule(date)) {
-					throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Date is not valid RRule");
+					throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Date " + date + " is not valid RRule");
 				}
 				break;
 		}

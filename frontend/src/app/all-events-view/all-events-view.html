@@ -4,6 +4,12 @@
 	(optionClicked)="toggleEventTypeOption($event)"
 ></app-event-type-selector>
 
+<br>
+<br>
+<button (click)="updateYear(year()-1)"><--</button>
+<span>{{ year() }}</span>
+<button (click)="updateYear(year()+1)">--></button>
+
 <div class="month-group-container">
 	@for (monthGroup of monthGroups(); track $index) {
 		<div class="month-group">

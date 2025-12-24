@@ -35,20 +35,20 @@ export class AllEventsView {
 	allEventTypes: EventType[] = ["Birthday", "Reminder", "World"];
 	shownEventTypes: WritableSignal<EventType[]> = signal(this.allEventTypes);
 
-	year: number = new Date().getFullYear();
+	year = signal<number>(new Date().getFullYear());
 
 	@Input() allEventsData: Signal<ManualEventData[] | undefined> = signal(undefined);
 	@Output() onEventClick = new EventEmitter<ManualEventData>();
 
 	monthGroups: Signal<MonthGroup[]> = computed(() => {
 		const events = this.allEventsData() || [];
-		const thisYear = getAllEventOccurrencesInYear(events, this.year).filter((e) =>
+		const thisYear = getAllEventOccurrencesInYear(events, this.year()).filter((e) =>
 			this.shownEventTypes().includes(e.eventType),
 		);
 
 		const monthGroups: MonthGroup[] = [];
 		for (let monthIndex = 0; monthIndex < 12; monthIndex++) {
-			const firstDayOfMonth = new Date(this.year, monthIndex, 1);
+			const firstDayOfMonth = new Date(this.year(), monthIndex, 1);
 			monthGroups.push({
 				firstDayOfMonth,
 				events: thisYear.filter((e) => stringToDate(e.date)?.getMonth() === monthIndex),
@@ -70,7 +70,7 @@ export class AllEventsView {
 	getMonthGroupTitle(monthGroup: MonthGroup): string {
 		const date = monthGroup.firstDayOfMonth;
 		const monthName = date.toLocaleString("en-US", { month: "long" });
-		return capitalize(monthName) + " " + date.getFullYear();
+		return capitalize(monthName) + " " + this.year();
 	}
 
 	getMonthEventCircleColor(eventType: EventType): string {
@@ -88,5 +88,9 @@ export class AllEventsView {
 			eventShortText = eventShortText.slice(0, eventShortText.length - BIRTHDAY_SUFFIX.length)
 		}
 		return `${getOrdinal(date.getDate())} | ${weekday} | ${eventShortText}`;
+	}
+
+	updateYear(year: number) {
+		this.year.set(year);
 	}
 }

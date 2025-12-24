@@ -8,16 +8,17 @@ import {
 	ManualEventData,
 	UpdateEventData,
 } from "./types";
-import { firstValueFrom, forkJoin } from "rxjs";
+import { firstValueFrom, forkJoin, Observable } from "rxjs";
 import { addDays, dateToString } from "./utils";
 import { removePendingRequest, getPendingRequests } from "./indexedDB";
 import { DASHBOARD_ENDPOINT, EVENTS_ENDPOINT, RETRY_REQUEST_HEADER } from "./constants";
+import { QueryClient } from "@tanstack/angular-query-experimental";
 
 @Injectable({
 	providedIn: "root",
 })
 export class HttpService {
-	constructor(private http: HttpClient) {
+	constructor(private http: HttpClient, private queryClient: QueryClient) {
 		this.processPendingRequests()
 	}
 
@@ -26,7 +27,7 @@ export class HttpService {
 		if (pendingRequests.length === 0) {
 			return
 		}
-		console.log("Doing ", pendingRequests.length, "pending requests")
+		const requests: Observable<Object>[] = [];
 		for (const pendingReq of pendingRequests) {
 			const postReq$ = this.http.post(pendingReq.url, pendingReq.body, {
 				headers: {
@@ -37,6 +38,15 @@ export class HttpService {
 				complete: () => removePendingRequest(pendingReq.key)
 			})
 		}
+		forkJoin(requests).subscribe({
+			complete: () => {
+				setTimeout(() => {
+					console.log("Invalidating cache")
+					this.queryClient.invalidateQueries({ queryKey: ["dashboardData"] });
+					this.queryClient.invalidateQueries({ queryKey: ["allEventsData"] });
+				}, 1000)
+			}
+		})
 	}
 
 	createNewEvent(event: CreateEventData) {

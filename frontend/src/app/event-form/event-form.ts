@@ -51,6 +51,7 @@ export class EventForm {
 
 	@Input() initialData?: ManualEventData;
 	@Input() isEdit: boolean = false;
+	@Output() onClose = new EventEmitter();
 
 	ngOnInit() {
 		if (this.initialData) {
@@ -87,6 +88,7 @@ export class EventForm {
 			this.setSuccess(offlineMode() ? "Queued!" : "Success!");
 			this.queryClient.invalidateQueries({ queryKey: ["dashboardData"] });
 			this.queryClient.invalidateQueries({ queryKey: ["allEventsData"] });
+			this.onClose.emit();
 		},
 		onError: this.onMutationError,
 		onMutate: this.onMutationMutate,
@@ -97,8 +99,6 @@ export class EventForm {
 			return this.httpService.deleteEvent(eventId);
 		},
 		onSuccess: (data) => {
-			this.eventText = "";
-			this.date = "";
 			this.setSuccess("Deleted!");
 			this.queryClient.invalidateQueries({ queryKey: ["dashboardData"] });
 			this.queryClient.invalidateQueries({ queryKey: ["allEventsData"] });
@@ -152,7 +152,7 @@ export class EventForm {
 					return;
 				}
 				if (this.selectedEventType === "Birthday") {
-					date = date.split("-").slice(0, 2).join("-");
+					date = date.split("-").reverse().slice(0, 2).join("-");
 					dateType = "Date";
 				} else {
 					break;
@@ -160,7 +160,7 @@ export class EventForm {
 			case "Date":
 				const DD_MM_re = /^(?:[1-9]|0[1-9]|[12]\d|3[01])[-.](?:[1-9]|0[1-9]|1[0-2])$/;
 				if (!DD_MM_re.test(date)) {
-					this.setError("Invalid DD-MM date");
+					this.setError("Invalid DD-MM date: " + date);
 					return;
 				}
 				break;

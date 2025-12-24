@@ -41,7 +41,7 @@ public class EventController {
 		}
 		ValidationService.validateEvent(eventDto);
 		Event event = eventMapper.toEvent(eventDto);
-        return eventRepository.save(event);
+        return eventRepository.saveAndFlush(event);
     }
 
     @PutMapping
@@ -53,7 +53,7 @@ public class EventController {
 		ValidationService.validateEvent(eventDto);
 		Event event = eventMapper.toEvent(eventDto);
 		log.info(event.toString());
-        return eventRepository.save(event);
+        return eventRepository.saveAndFlush(event);
     }
 
     @DeleteMapping("/{id}")

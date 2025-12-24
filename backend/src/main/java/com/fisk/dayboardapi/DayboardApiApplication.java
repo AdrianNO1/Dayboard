@@ -1,8 +1,6 @@
 package com.fisk.dayboardapi;
 
-import com.fisk.dayboardapi.service.EmailService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -14,6 +12,9 @@ public class DayboardApiApplication implements CommandLineRunner {
 	@Value("${FRONTEND_APP_PATH:}")
 	private String frontendAppPath;
 
+	@Value("${DEV_MODE:false}")
+	private boolean devMode;
+
 	@Value("${AUTOKILL_DELAY_MS:60000}")
 	private int AUTOKILL_DELAY_MS;
 
@@ -23,7 +24,7 @@ public class DayboardApiApplication implements CommandLineRunner {
 
 	@Override
     public void run(String... args) throws Exception {
-		log.info("FORNTEND APP APTH: " + frontendAppPath);
+		if (devMode) return;
 		if (frontendAppPath != null && !frontendAppPath.isEmpty()) {
 			ProcessBuilder pb = new ProcessBuilder("cmd.exe", "/c", frontendAppPath);
 			pb.start();
