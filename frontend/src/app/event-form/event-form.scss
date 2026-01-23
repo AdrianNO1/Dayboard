@@ -89,12 +89,12 @@ button:active {
 	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Delete button has a distinct red color */
-button:last-of-type:not(:first-of-type) {
+/* Delete button has a distinct red color - targets second button when present */
+button:nth-of-type(2) {
 	background: linear-gradient(135deg, #ff6b6b, #ee5a52);
 }
 
-button:last-of-type:not(:first-of-type):hover {
+button:nth-of-type(2):hover {
 	background: linear-gradient(135deg, #ff8787, #ff6b6b);
 }
 
