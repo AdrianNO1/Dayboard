@@ -1,3 +1,45 @@
-.option-button.selected {
-	background-color: blue;
+/* Button Selector Styling */
+:host {
+	display: flex;
+	gap: 0.5rem;
+	flex-wrap: wrap;
+	margin-bottom: 0.5rem;
 }
+
+.option-button {
+	padding: 0.6rem 1.25rem;
+	background-color: rgba(255, 255, 255, 0.15);
+	border: 2px solid rgba(255, 255, 255, 0.3);
+	border-radius: 20px;
+	color: #fff;
+	font-size: 0.95rem;
+	font-weight: 500;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.option-button:hover {
+	background-color: rgba(255, 255, 255, 0.25);
+	border-color: rgba(255, 255, 255, 0.5);
+	transform: translateY(-2px);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.option-button.selected {
+	background: linear-gradient(135deg, #8e97fd, #6b73e0);
+	border-color: rgba(142, 151, 253, 0.8);
+	box-shadow: 0 4px 16px rgba(142, 151, 253, 0.4);
+	font-weight: 600;
+}
+
+.option-button.selected:hover {
+	background: linear-gradient(135deg, #9fa8fd, #7c84e8);
+	transform: translateY(-2px);
+}
+
+.option-button:active {
+	transform: translateY(0);
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+

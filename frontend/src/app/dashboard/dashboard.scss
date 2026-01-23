@@ -1,0 +1,110 @@
+/* Dashboard Container */
+.dashboard-container {
+	padding: 1rem;
+}
+
+/* Header Section */
+.header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 1rem;
+	position: relative;
+}
+
+/* Offline Mode Alert */
+.offline-alert {
+	position: fixed;
+	top: 1rem;
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: 999;
+	padding: 0.75rem 1.5rem;
+	background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+	border: 2px solid rgba(255, 255, 255, 0.3);
+	border-radius: 25px;
+	color: #fff;
+	font-weight: 600;
+	font-size: 1rem;
+	box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+	animation: pulse 2s ease-in-out infinite, slideDown 0.5s ease-out;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+}
+
+/* Offline alert icon effect using pseudo-element */
+.offline-alert::before {
+	content: "⚠";
+	margin-right: 0.5rem;
+	font-size: 1.2rem;
+	animation: blink 1.5s ease-in-out infinite;
+}
+
+/* Pulse animation for offline alert */
+@keyframes pulse {
+	0%, 100% {
+		box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+	}
+	50% {
+		box-shadow: 0 6px 30px rgba(255, 107, 107, 0.6);
+	}
+}
+
+/* Slide down animation on appearance */
+@keyframes slideDown {
+	from {
+		opacity: 0;
+		transform: translateX(-50%) translateY(-20px);
+	}
+	to {
+		opacity: 1;
+		transform: translateX(-50%) translateY(0);
+	}
+}
+
+/* Blink animation for warning icon */
+@keyframes blink {
+	0%, 100% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0.5;
+	}
+}
+
+/* Settings Button */
+.settings-button {
+	background: rgba(255, 255, 255, 0.2);
+	border: 2px solid rgba(255, 255, 255, 0.3);
+	border-radius: 50%;
+	padding: 0.5rem;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	color: #fff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 48px;
+	height: 48px;
+	margin-left: auto;
+}
+
+.settings-button:hover {
+	background: rgba(255, 255, 255, 0.3);
+	transform: rotate(90deg);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.settings-button:active {
+	transform: rotate(90deg) scale(0.95);
+}
+
+/* Error messages */
+p.error {
+	padding: 1rem;
+	margin-top: 1rem;
+	background-color: rgba(255, 70, 70, 0.2);
+	border: 1px solid rgba(255, 70, 70, 0.5);
+	border-radius: 8px;
+	font-weight: 500;
+}
