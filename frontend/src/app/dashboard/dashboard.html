@@ -1,7 +1,7 @@
 <div class="dashboard-container">
 	<div class="header">
 		@if (offlineMode()) {
-			<div class="offline-alert">Offline</div>
+		<div class="offline-alert">Offline</div>
 		}
 		<button class="settings-button" (click)="openSettings()">
 			<mat-icon>settings</mat-icon>
@@ -10,17 +10,23 @@
 	<app-weather></app-weather>
 	<br />
 	@for (groupGroup of groupGroups(); track $index) {
-		<app-card-group [group]="groupGroup"></app-card-group>
+	<app-card-group [group]="groupGroup" (editEvent)="openEventEditModal($event)"></app-card-group>
 	}
 	@if (dashboardDataQuery.isError()) {
-		<p class="error">
-			{{ dashboardDataQuery.error().stack || dashboardDataQuery.error().message }}
-		</p>
+	<p class="error">
+		{{ dashboardDataQuery.error().stack || dashboardDataQuery.error().message }}
+	</p>
 	}
 </div>
 
 @if (isSettingsOpen) {
-	<app-modal (onClose)="closeSettings()" [width]="'80vw'" [height]="'80vh'">
-		<app-settings></app-settings>
-	</app-modal>
+<app-modal (onClose)="closeSettings()" [width]="'80vw'" [height]="'80vh'">
+	<app-settings></app-settings>
+</app-modal>
+}
+@if (isEventFormModalOpen) {
+<app-modal (onClose)="closeNewEventModal()" [width]="'60vw'" [height]="'60vh'">
+	<app-event-form [initialData]="eventFormModalInitialData" [isEdit]="eventFormModalIsEdit"
+		(onClose)="closeNewEventModal()"></app-event-form>
+</app-modal>
 }

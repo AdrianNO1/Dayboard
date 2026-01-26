@@ -1,6 +1,6 @@
-import { Component, Input } from "@angular/core";
+import { Component, EventEmitter, Input, Output } from "@angular/core";
 import { Card } from "../card/card";
-import { EventGroup } from "../types";
+import { EventGroup, EventGroupData } from "../types";
 
 @Component({
 	selector: "app-card-group",
@@ -10,6 +10,7 @@ import { EventGroup } from "../types";
 })
 export class CardGroup {
 	@Input() group?: EventGroup;
+	@Output() editEvent = new EventEmitter<EventGroupData>();
 
 	get title() {
 		return this.group?.title || "";

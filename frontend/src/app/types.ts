@@ -40,6 +40,7 @@ export interface EventGroupData {
 	eventType: EventType | "Email";
 	date?: string;
 	sender?: string;
+	id?: number;
 }
 
 export interface EventGroup {

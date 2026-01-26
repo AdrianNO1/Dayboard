@@ -5,7 +5,8 @@ import { CardGroup } from "../card-group/card-group";
 import { MatIconModule } from "@angular/material/icon";
 import { Settings } from "../settings/settings";
 import { Modal } from "../modal/modal";
-import { EventGroup, DashboardData } from "../types";
+import { EventGroup, DashboardData, ManualEventData, EventGroupData } from "../types";
+import { EventForm } from "../event-form/event-form";
 import { CreateQueryResult, injectQuery } from "@tanstack/angular-query-experimental";
 import { HttpService } from "../http-service";
 import { Weather } from "../weather/weather";
@@ -14,7 +15,7 @@ import { offlineMode } from "../http-interceptor";
 
 @Component({
 	selector: "app-dashboard",
-	imports: [CardGroup, MatIconModule, Settings, Modal, Weather],
+	imports: [CardGroup, MatIconModule, Settings, Modal, Weather, EventForm],
 	templateUrl: "./dashboard.html",
 	styleUrl: "./dashboard.scss",
 })
@@ -25,6 +26,24 @@ export class Dashboard {
 	dashboardDataQuery: CreateQueryResult<EventGroup[], Error>;
 	offlineMode = offlineMode;
 	initialized: boolean = false;
+
+	isEventFormModalOpen = false;
+	eventFormModalIsEdit = false;
+	eventFormModalInitialData?: ManualEventData;
+
+	openEventEditModal(clickedEvent: EventGroupData): void {
+		if (!clickedEvent.id) {
+			console.error("Cannot edit event without ID", clickedEvent);
+			return;
+		}
+		this.isEventFormModalOpen = true;
+		this.eventFormModalIsEdit = true;
+		this.eventFormModalInitialData = clickedEvent as unknown as ManualEventData;
+	}
+
+	closeNewEventModal(): void {
+		this.isEventFormModalOpen = false;
+	}
 
 	constructor(
 		private router: Router,

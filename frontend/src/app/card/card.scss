@@ -18,7 +18,6 @@
 	&[href] { cursor: pointer; }
 	&:not([href]), &[href=""] {
 		cursor: default;
-		pointer-events: none;
 	}
 
 	.title {

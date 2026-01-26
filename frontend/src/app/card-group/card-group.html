@@ -1,13 +1,13 @@
 @if (cards.length > 0 || group?.showIfEmpty) {
-	<div class="title">{{ title }}</div>
+<div class="title">{{ title }}</div>
 
-	@if (cards.length === 0) {
-		<p class="nothing">Nothing</p>
-	} @else {
-		<div class="card-group">
-			@for (card of cards; track $index) {
-				<app-card [data]="card"></app-card>
-			}
-		</div>
+@if (cards.length === 0) {
+<p class="nothing">Nothing</p>
+} @else {
+<div class="card-group">
+	@for (card of cards; track $index) {
+	<app-card [data]="card" (editEvent)="editEvent.emit($event)"></app-card>
 	}
+</div>
+}
 }

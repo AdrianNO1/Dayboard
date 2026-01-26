@@ -1,4 +1,4 @@
-import { Component, HostListener, Input } from "@angular/core";
+import { Component, EventEmitter, HostListener, Input, Output } from "@angular/core";
 import { EventData, EventGroupData } from "../types";
 import { formatDateAsShortTitle, getEventUrl } from "../utils";
 import { EVENT_TYPE_STYLES } from "../config";
@@ -57,8 +57,12 @@ export class Card {
 		this.contextMenuVisible = false;
 	}
 
-	onSnooze() {
-		console.log("snooozed");
+	@Output() editEvent = new EventEmitter<EventGroupData>();
+
+	onEdit() {
+		if (this.data) {
+			this.editEvent.emit(this.data);
+		}
 		this.hideMenu();
 	}
 

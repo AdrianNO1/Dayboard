@@ -1,21 +1,17 @@
 @if (data) {
-	<a class="card-container" [style]="getEventStyles()" (contextmenu)="onRightClick($event)" [href]="eventHref" target="_blank" rel="noopener noreferrer">
-		@if (title) {
-			<div class="title">{{ title }}</div>
-		}
-		@if (eventText; as text) {
-			<div class="message">{{ text }}</div>
-		}
-	</a>
-
-	@if (contextMenuVisible) {
-		<div
-			class="context-menu"
-			[style.top]="contextMenuY + 'px'"
-			[style.left]="contextMenuX + 'px'"
-			(click)="onSnooze()"
-		>
-			Snooze
-		</div>
+<a class="card-container" [style]="getEventStyles()" (contextmenu)="onRightClick($event)" [href]="eventHref"
+	target="_blank" rel="noopener noreferrer">
+	@if (title) {
+	<div class="title">{{ title }}</div>
 	}
+	@if (eventText; as text) {
+	<div class="message">{{ text }}</div>
+	}
+</a>
+
+@if (contextMenuVisible) {
+<div class="context-menu" [style.top]="contextMenuY + 'px'" [style.left]="contextMenuX + 'px'" (click)="onEdit()">
+	Edit
+</div>
+}
 }
