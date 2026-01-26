@@ -7,6 +7,7 @@ const RESPONSE_CACHE_STORE = "response_cache";
 export interface PendingRequest {
 	url: string;
 	body: Object;
+	method: string;
 }
 
 export interface PendingRequestWithKey extends PendingRequest {

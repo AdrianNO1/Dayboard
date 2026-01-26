@@ -29,7 +29,8 @@ export class HttpService {
 		}
 		const requests: Observable<Object>[] = [];
 		for (const pendingReq of pendingRequests) {
-			const postReq$ = this.http.post(pendingReq.url, pendingReq.body, {
+			const postReq$ = this.http.request(pendingReq.method || "POST", pendingReq.url, {
+				body: pendingReq.body,
 				headers: {
 					[RETRY_REQUEST_HEADER]: "true"
 				}

@@ -99,7 +99,7 @@ export class EventForm {
 			return this.httpService.deleteEvent(eventId);
 		},
 		onSuccess: (data) => {
-			this.setSuccess("Deleted!");
+			this.setSuccess(offlineMode() ? "Queued!" : "Deleted!");
 			this.queryClient.invalidateQueries({ queryKey: ["dashboardData"] });
 			this.queryClient.invalidateQueries({ queryKey: ["allEventsData"] });
 		},
@@ -207,7 +207,7 @@ export class EventForm {
 			if (confirm("Are you sure you want to delete this event?\n" + this.initialData.eventText)) {
 				this.deleteMutation.mutate(this.initialData.id)
 			}
-		}  else {
+		} else {
 			alert("InitialData not set")
 		}
 	}

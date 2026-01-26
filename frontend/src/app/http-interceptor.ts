@@ -16,12 +16,15 @@ export const offlineMode = signal<boolean>(false)
 export const httpInterceptor: HttpInterceptorFn = (req, next) => {
 	switch (req.method) {
 		case "POST":
+		case "PUT":
+		case "DELETE":
 			if (req.headers.get(RETRY_REQUEST_HEADER) === "true") {
 				break;
 			}
 			const pendingRequest: PendingRequest = {
 				url: req.urlWithParams,
 				body: req.body as Object,
+				method: req.method,
 			};
 
 			const key = generateRandomKey()
@@ -99,6 +102,6 @@ export const httpInterceptor: HttpInterceptorFn = (req, next) => {
 					})
 				)
 			}
-		}
+	}
 	return next(req);
 };
