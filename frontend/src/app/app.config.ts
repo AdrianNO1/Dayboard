@@ -20,11 +20,7 @@ export const appConfig: ApplicationConfig = {
 		provideQueryClient(new QueryClient()),
 		provideHttpClient(withInterceptors([httpInterceptor])),
 		provideServiceWorker("ngsw-worker.js", {
-			enabled: !isDevMode(),
-			registrationStrategy: "registerWhenStable:30000",
-		}),
-		provideServiceWorker("ngsw-worker.js", {
-			enabled: !isDevMode(),
+			enabled: true,
 			registrationStrategy: "registerWhenStable:30000",
 		}),
 	],
