@@ -6,6 +6,8 @@
 - Run `mvn clean package` in the backend dir
 - Run the backend jar with `java -jar target/DayboardAPI-0.0.1-SNAPSHOT.jar`
 
+Optionally, set GMAIL_USER and GMAIL_PASS environment variables to enable fetching emails. If you want to filter the emails displayed, look at the file `backend\src\main\resources\gmailFlags.example.txt` for setup.
+
 ### Info
 
 That will start the backend, which opens the frontend PWA, letting it load all data and make API requests, and then the server will close after 1 minute to preserve memory. This can be adjusted with the AUTOKILL_DELAY_MS environment variable. Set it to 0 to disable autokill.

@@ -23,7 +23,6 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 @Service
 public class EmailService {
 	private Store store;
-	public boolean errorOccurred = false;
 
 	@Value("classpath:gmailFlags.txt")
 	private Resource gmailFlagsResource;
@@ -34,8 +33,7 @@ public class EmailService {
 
 		Session session = Session.getDefaultInstance(props, null);
 		if (GMAIL_PASS == null || GMAIL_USER == null) {
-			errorOccurred = true;
-			log.error("Missing environment variable GMAIL_PASS or GMAIL_USER");
+			log.warn("Missing environment variable GMAIL_PASS or GMAIL_USER");
 			return;
 		}
 		try {
@@ -43,7 +41,6 @@ public class EmailService {
 			store.connect("imap.googlemail.com", GMAIL_USER, GMAIL_PASS);
 		} catch (MessagingException e) {
 			log.error("Error connecting to the imap server", e);
-			errorOccurred = true;
 		}
 	}
 
