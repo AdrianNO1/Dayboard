@@ -61,6 +61,9 @@
 				},
 				"serve": {
 					"builder": "@angular/build:dev-server",
+					"options": {
+						"port": 1291
+					},
 					"configurations": {
 						"production": {
 							"buildTarget": "dayboard:build:production"

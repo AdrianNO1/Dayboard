@@ -1,7 +1,7 @@
 ### Setup
 - Run `npm i` in the frontend dir
-- Run `npm start`
-- Open the browser at `http://localhost:4200` and install the PWA
+- Run `npm run start:pwa`
+- Open the browser at `http://localhost:1291` and install the PWA
 - Copy the path to the PWA shortcut and set it as the DAYBOARD_APP_PATH environment variable
 - Run `mvn clean package` in the backend dir
 - Run the backend jar with `java -jar target/DayboardAPI-0.0.1-SNAPSHOT.jar`
