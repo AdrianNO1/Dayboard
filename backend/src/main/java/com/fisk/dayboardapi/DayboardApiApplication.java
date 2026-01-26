@@ -28,8 +28,10 @@ public class DayboardApiApplication implements CommandLineRunner {
 		if (frontendAppPath != null && !frontendAppPath.isEmpty()) {
 			ProcessBuilder pb = new ProcessBuilder("cmd.exe", "/c", frontendAppPath);
 			pb.start();
-			Thread.sleep(AUTOKILL_DELAY_MS);
-			System.exit(0);
+			if (AUTOKILL_DELAY_MS != 0) {
+				Thread.sleep(AUTOKILL_DELAY_MS);
+				System.exit(0);
+			}
 		} else {
 			log.warn("Frontend App Path not set");
 		}
