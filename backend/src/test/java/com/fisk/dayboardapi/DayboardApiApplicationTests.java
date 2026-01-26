@@ -6,6 +6,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class DayboardApiApplicationTests {
 
+    static {
+        System.setProperty("DAYBOARD_APP_PATH", "");
+    }
+
     @Test
     void contextLoads() {
     }
