@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @Slf4j
 @SpringBootApplication
 public class DayboardApiApplication implements CommandLineRunner {
-	@Value("${FRONTEND_APP_PATH:}")
+	@Value("${DAYBOARD_APP_PATH:}")
 	private String frontendAppPath;
 
 	@Value("${DEV_MODE:false}")
