@@ -5,11 +5,13 @@
 - Maven
 
 ### Setup
-- Run `npm i` in the frontend dir
+- Run `cd frontend`
+- Run `npm i`
 - Run `npm run start:pwa`
 - Open the browser at `http://localhost:1291` and install the PWA (install button should pop up in browser, or press the 3 dots and select install)
 - Copy the path to the PWA shortcut and set it as the DAYBOARD_APP_PATH environment variable
-- Run `mvn clean package` in the backend dir
+- Run `cd ../backend`
+- Run `mvn clean package`
 - Run the backend jar with `java -jar target/DayboardAPI-0.0.1-SNAPSHOT.jar`
 
 Optionally, set GMAIL_USER and GMAIL_PASS environment variables to enable fetching emails. If you want to filter the emails displayed, look at the file `backend\src\main\resources\gmailFlags.example.txt` for setup.
