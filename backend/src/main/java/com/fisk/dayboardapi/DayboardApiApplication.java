@@ -12,6 +12,9 @@ public class DayboardApiApplication implements CommandLineRunner {
 	@Value("${DAYBOARD_APP_PATH:}")
 	private String frontendAppPath;
 
+	@Value("${DAYBOARD_OPEN_URL:}")
+	private String openUrl;
+
 	@Value("${DEV_MODE:false}")
 	private boolean devMode;
 
@@ -26,9 +29,11 @@ public class DayboardApiApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
 		if (devMode) return;
 		if (frontendAppPath != null && !frontendAppPath.isEmpty()) {
-			ProcessBuilder pb = new ProcessBuilder("cmd.exe", "/c", frontendAppPath);
-			pb.start();
-			if (AUTOKILL_DELAY_MS != 0) {
+			new ProcessBuilder("cmd.exe", "/c", frontendAppPath).start();
+			if (openUrl != null && !openUrl.isEmpty()) {
+				new ProcessBuilder("cmd.exe", "/c", "start " + openUrl).start();
+			}
+			if (AUTOKILL_DELAY_MS > 0) {
 				Thread.sleep(AUTOKILL_DELAY_MS);
 				System.exit(0);
 			}
