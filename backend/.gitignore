@@ -34,5 +34,6 @@ build/
 
 ### Stuff ###
 .env*
+!.env.example
 data/data.db
 gmailFlags.txt

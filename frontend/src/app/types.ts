@@ -1,5 +1,5 @@
 export type ManualEventType = "Birthday" | "Reminder" | "World"
-export type EventType = ManualEventType | "Email"
+export type EventType = ManualEventType | "Email" | "Storage"
 
 export type EventDateType = "Date" | "Dateyear" | "RRule" | "Custom";
 

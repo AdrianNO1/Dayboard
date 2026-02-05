@@ -24,6 +24,9 @@ export class Card {
 		if (this.data?.eventType === "Email") {
 			return (this.data.sender ? this.data.sender + " - " : "") + this.data.eventText;
 		}
+		if (this.data?.eventType === "Storage") {
+			return "DANGER";
+		}
 		if (this.data?.date) {
 			return formatDateAsShortTitle(this.data.date);
 		}

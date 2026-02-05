@@ -1,5 +1,6 @@
 package com.fisk.dayboardapi;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -12,8 +13,9 @@ public class DayboardApiApplication implements CommandLineRunner {
 	@Value("${DAYBOARD_APP_PATH:}")
 	private String frontendAppPath;
 
-	@Value("${DAYBOARD_OPEN_URL:}")
-	private String openUrl;
+
+	@Value("${DAYBOARD_OPEN_URLS:}")
+	private String openUrls;
 
 	@Value("${DEV_MODE:false}")
 	private boolean devMode;
@@ -22,6 +24,8 @@ public class DayboardApiApplication implements CommandLineRunner {
 	private int AUTOKILL_DELAY_MS;
 
     public static void main(String[] args) {
+		Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
+		dotenv.entries().forEach(entry -> System.setProperty(entry.getKey(), entry.getValue()));
         SpringApplication.run(DayboardApiApplication.class, args);
     }
 
@@ -30,8 +34,12 @@ public class DayboardApiApplication implements CommandLineRunner {
 		if (devMode) return;
 		if (frontendAppPath != null && !frontendAppPath.isEmpty()) {
 			new ProcessBuilder("cmd.exe", "/c", frontendAppPath).start();
-			if (openUrl != null && !openUrl.isEmpty()) {
-				new ProcessBuilder("cmd.exe", "/c", "start " + openUrl).start();
+			if (openUrls != null && !openUrls.isEmpty()) {
+				for (String url : openUrls.split(",")) {
+					if (!url.trim().isEmpty()) {
+						new ProcessBuilder("cmd.exe", "/c", "start " + url.trim()).start();
+					}
+				}
 			}
 			if (AUTOKILL_DELAY_MS > 0) {
 				Thread.sleep(AUTOKILL_DELAY_MS);
