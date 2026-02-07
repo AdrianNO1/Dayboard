@@ -22,13 +22,13 @@ Variables:
 - `DAYBOARD_OPEN_URLS`: (Optional) Comma-separated URLs to open on launch
 - `GMAIL_USER`: (Optional) Gmail address
 - `GMAIL_PASS`: (Optional) Gmail App Password
-- `AUTOKILL_DELAY_MS`: (Optional) Time in ms before backend shuts down (default 60000). Set to 0 to disable.
+- `AUTOKILL_DELAY_S`: (Optional) Time in seconds before backend shuts down (default 60). Set to 0 to disable.
 - `STORAGE_ALERT_PATH`: (Optional) Drive path to monitor for low storage (e.g. D:\)
 - `STORAGE_ALERT_THRESHOLD_GB`: (Optional) Threshold in GB for storage alert (default 20)
 
 ### Info
 
-Running the backend jar will start the backend, which opens the frontend PWA. The backend automatically shuts down after a configured delay (default 1 minute) to preserve memory, controlled by `AUTOKILL_DELAY_MS`.
+Running the backend jar will start the backend, which opens the frontend PWA. The backend automatically shuts down after a configured delay (default 1 minute) to preserve memory, controlled by `AUTOKILL_DELAY_S`.
 
 **Automation:**
 Use **Windows Task Scheduler** or **cron** to run this as a daily dashboard.

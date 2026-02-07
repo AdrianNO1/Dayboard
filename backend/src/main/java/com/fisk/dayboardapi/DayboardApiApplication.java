@@ -20,8 +20,8 @@ public class DayboardApiApplication implements CommandLineRunner {
 	@Value("${DEV_MODE:false}")
 	private boolean devMode;
 
-	@Value("${AUTOKILL_DELAY_MS:60000}")
-	private int AUTOKILL_DELAY_MS;
+	@Value("${AUTOKILL_DELAY_S:60}")
+	private int AUTOKILL_DELAY_S;
 
     public static void main(String[] args) {
 		Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
@@ -41,8 +41,8 @@ public class DayboardApiApplication implements CommandLineRunner {
 					}
 				}
 			}
-			if (AUTOKILL_DELAY_MS > 0) {
-				Thread.sleep(AUTOKILL_DELAY_MS);
+			if (AUTOKILL_DELAY_S > 0) {
+				Thread.sleep(AUTOKILL_DELAY_S * 1000L);
 				System.exit(0);
 			}
 		} else {
