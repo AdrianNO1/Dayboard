@@ -34,7 +34,7 @@ export const httpInterceptor: HttpInterceptorFn = (req, next) => {
 				if (event?.type === HttpEventType.Response) {
 					removePendingRequest(key);
 				} else if (err instanceof HttpErrorResponse) {
-					if (err.status !== 0) {
+					if (err.status !== 0 && err.status !== 504) {
 						removePendingRequest(key);
 					}
 				}
@@ -45,7 +45,7 @@ export const httpInterceptor: HttpInterceptorFn = (req, next) => {
 					next: (data) => handleRequestEvent(data, null),
 				}),
 				catchError((error) => {
-					if (error.status !== 0) {
+					if (error.status != 0 && error.status != 504) {
 						removePendingRequest(key);
 						return throwError(() => error);
 					}
@@ -54,6 +54,7 @@ export const httpInterceptor: HttpInterceptorFn = (req, next) => {
 						statusText: "Accepted",
 						url: req.urlWithParams
 					})
+					offlineMode.set(true)
 					return of(response)
 				})
 			);
@@ -75,7 +76,7 @@ export const httpInterceptor: HttpInterceptorFn = (req, next) => {
 					}),
 					catchError((error) => {
 						console.log(error)
-						if (error.status !== 0) {
+						if (error.status != 0 && error.status != 504) {
 							return throwError(() => error);
 						}
 						return from(getCachedResponse(req.url)).pipe(

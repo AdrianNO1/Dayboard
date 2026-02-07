@@ -16,7 +16,6 @@ export const appConfig: ApplicationConfig = {
 		provideBrowserGlobalErrorListeners(),
 		provideZoneChangeDetection({ eventCoalescing: true }),
 		provideRouter(routes),
-		provideHttpClient(),
 		provideQueryClient(new QueryClient()),
 		provideHttpClient(withInterceptors([httpInterceptor])),
 		provideServiceWorker("ngsw-worker.js", {

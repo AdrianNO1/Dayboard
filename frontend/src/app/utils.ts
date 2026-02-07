@@ -88,8 +88,12 @@ export function normalizeEventDateToSameDateType(
 				if (!fullDate) {
 					throw new Error("Invalid date");
 				}
-				if (fullDate < day) {
-					fullDateStr = event.date + "-" + day.getFullYear() + 1;
+
+				const dayAtMidnight = new Date(day);
+				dayAtMidnight.setHours(0, 0, 0, 0);
+
+				if (fullDate < dayAtMidnight) {
+					fullDateStr = event.date + "-" + (day.getFullYear() + 1);
 				}
 				event.date = fullDateStr;
 				normalized.push(event);
