@@ -10,6 +10,7 @@ interface EventDataTemplate<T> {
 	date: string;
 	dateType: EventDateType;
 	daysNotice: number;
+	redDay: boolean;
 	createdAt: string;
 	updatedAt: string;
 }
@@ -29,6 +30,7 @@ export interface CreateEventData {
 	date: string;
 	dateType: EventDateType;
 	daysNotice?: number;
+	redDay: boolean;
 }
 
 export interface UpdateEventData extends CreateEventData {
@@ -41,6 +43,7 @@ export interface EventGroupData {
 	date?: string;
 	sender?: string;
 	id?: number;
+	redDay?: boolean;
 }
 
 export interface EventGroup {

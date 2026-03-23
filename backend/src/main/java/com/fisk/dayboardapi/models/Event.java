@@ -53,11 +53,18 @@ public class Event {
 	@Column
 	private Integer daysNotice;
 
+	@Column(nullable = false)
+	private Boolean redDay;
+
 	public int getDaysNotice() {
 		if (daysNotice == null) {
 			Integer eventTypeNoticeDays = EventConfig.EVENT_TYPE_DEFAULT_NOTICE_DAYS.get(eventType);
 			return Objects.requireNonNullElse(eventTypeNoticeDays, EventConfig.DEFAULT_NOTICE_DAYS);
 		}
 		return daysNotice;
+	}
+
+	public boolean getRedDay() {
+		return Boolean.TRUE.equals(redDay);
 	}
 }

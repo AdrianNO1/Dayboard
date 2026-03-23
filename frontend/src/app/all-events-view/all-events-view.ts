@@ -12,11 +12,10 @@ import { EventType, ManualEventData } from "../types";
 import { EventTypeSelector } from "../button-selector/button-selector";
 import {
 	capitalize,
-	formatDateAsShortTitle,
+	getEventStyles as buildEventStyles,
 	getAllEventOccurrencesInYear,
 	getOrdinal,
 	stringToDate,
-	truncateText,
 } from "../utils";
 import { BIRTHDAY_SUFFIX, EVENT_TYPE_STYLES } from "../config";
 
@@ -73,8 +72,8 @@ export class AllEventsView {
 		return capitalize(monthName) + " " + this.year();
 	}
 
-	getMonthEventCircleColor(eventType: EventType): string {
-		return EVENT_TYPE_STYLES[eventType]["background-color"];
+	getMonthEventCircleColor(event: ManualEventData): string {
+		return buildEventStyles(event)?.["background-color"] || EVENT_TYPE_STYLES[event.eventType]["background-color"];
 	}
 
 	getMonthEventDateText(event: ManualEventData): string {

@@ -12,4 +12,5 @@ public class EventDto {
 	private String eventText;
 	private String date;
 	private Integer daysNotice;
+	private boolean redDay;
 }

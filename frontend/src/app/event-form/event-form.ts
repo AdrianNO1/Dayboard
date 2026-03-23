@@ -46,6 +46,7 @@ export class EventForm {
 	eventText: string = "";
 	date: string = "";
 	daysNotice?: number;
+	redDay = false;
 	statusMessage = signal<string>("");
 	statusMessageType = signal<StatusMessageType>(null)
 
@@ -58,6 +59,7 @@ export class EventForm {
 			this.eventText = this.initialData.eventText;
 			this.date = this.initialData.date;
 			this.daysNotice = this.initialData.daysNotice;
+			this.redDay = this.initialData.redDay;
 			this.selectedDateType = this.initialData.dateType;
 			this.selectedEventType = this.initialData.eventType;
 		}
@@ -182,6 +184,7 @@ export class EventForm {
 			date: date,
 			dateType,
 			daysNotice: this.daysNotice,
+			redDay: this.redDay,
 		};
 
 		if (this.isEdit) {

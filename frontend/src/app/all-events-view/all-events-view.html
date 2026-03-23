@@ -19,7 +19,7 @@
 					<div class="event" (click)="onEventClick.emit(event)" [title]="event.eventText">
 						<div
 							class="circle"
-							[style.background-color]="getMonthEventCircleColor(event.eventType)"
+							[style.background-color]="getMonthEventCircleColor(event)"
 						></div>
 						<div class="desc">{{ getMonthEventDateText(event) }}</div>
 					</div>

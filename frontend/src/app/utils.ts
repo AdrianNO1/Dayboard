@@ -8,6 +8,7 @@ import {
 } from "./types";
 import { RRule } from "RRule";
 import { DAYS_IN_YEAR, EMAIL_LOOKBACK_DAYS } from "./constants";
+import { EVENT_TYPE_STYLES, NORSK_KALENDER_URL, RED_DAY_STYLE } from "./config";
 
 function stealCards<T>(cardsList: T[], stealFunc: (e: T) => boolean): T[] {
 	const stolen: T[] = [];
@@ -145,6 +146,12 @@ export function addDays(date: Date, days: number): Date {
 	return result;
 }
 
+export function isWeekend(date: Date | string): boolean {
+	const normalizedDate = ensureDate(date);
+	const day = normalizedDate.getDay();
+	return day === 0 || day === 6;
+}
+
 export function stringToDate(dateString: string): Date | undefined {
 	const [d, m, y] = (
 		dateString.split("-")[0].length === 4
@@ -218,9 +225,23 @@ export function getEmailUrl(eventTitle: string): string {
 	return `https://mail.google.com/mail/u/0/#advanced-search/query=${searchParam}+++++++&isrefinement=true&datestart=${dateStart}&daterangetype=custom_range`;
 }
 
+export function getEventStyles(event: EventGroupData | ManualEventData): Record<string, string> | null {
+	const baseStyles = EVENT_TYPE_STYLES[event.eventType];
+	if (!baseStyles) {
+		return null;
+	}
+	if (event.eventType === "World" && event.redDay && event.date && !isWeekend(event.date)) {
+		return { ...baseStyles, ...RED_DAY_STYLE };
+	}
+	return baseStyles;
+}
+
 export function getEventUrl(event: EventGroupData): string | null {
 	if (event.eventType === "Email") {
 		return getEmailUrl(event.eventText);
+	}
+	if (event.redDay) {
+		return NORSK_KALENDER_URL;
 	}
 	const match = event.eventText.match(/\bhttps?:\/\/[^\s<>"')\]]+/i);
 	return match ? match[0] : null;

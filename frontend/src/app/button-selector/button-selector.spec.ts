@@ -3,8 +3,8 @@ import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { ButtonSelector } from "./button-selector";
 
 describe("ButtonSelector", () => {
-	let component: ButtonSelector;
-	let fixture: ComponentFixture<ButtonSelector>;
+	let component: ButtonSelector<unknown>;
+	let fixture: ComponentFixture<ButtonSelector<unknown>>;
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({

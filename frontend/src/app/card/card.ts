@@ -1,7 +1,6 @@
 import { Component, EventEmitter, HostListener, Input, Output } from "@angular/core";
-import { EventData, EventGroupData } from "../types";
-import { formatDateAsShortTitle, getEventUrl } from "../utils";
-import { EVENT_TYPE_STYLES } from "../config";
+import { EventGroupData } from "../types";
+import { formatDateAsShortTitle, getEventStyles as buildEventStyles, getEventUrl } from "../utils";
 
 @Component({
 	selector: "app-card",
@@ -70,6 +69,6 @@ export class Card {
 	}
 
 	getEventStyles() {
-		return this.data ? EVENT_TYPE_STYLES[this.data.eventType] : null;
+		return this.data ? buildEventStyles(this.data) : null;
 	}
 }
