@@ -12,21 +12,26 @@ import { firstValueFrom, forkJoin, Observable } from "rxjs";
 import { addDays, dateToString } from "./utils";
 import { removePendingRequest, getPendingRequests } from "./indexedDB";
 import { DASHBOARD_ENDPOINT, EVENTS_ENDPOINT, RETRY_REQUEST_HEADER } from "./constants";
+import { offlineMode } from "./offline-mode";
 import { QueryClient } from "@tanstack/angular-query-experimental";
 
 @Injectable({
 	providedIn: "root",
 })
 export class HttpService {
-	constructor(private http: HttpClient, private queryClient: QueryClient) {
-		this.processPendingRequests()
-	}
+	private pendingRequestsProcessed = false;
+
+	constructor(private http: HttpClient, private queryClient: QueryClient) {}
 
 	async processPendingRequests() {
+		if (offlineMode() || this.pendingRequestsProcessed) {
+			return
+		}
 		const pendingRequests = await getPendingRequests()
 		if (pendingRequests.length === 0) {
 			return
 		}
+		this.pendingRequestsProcessed = true;
 		const requests: Observable<Object>[] = [];
 		for (const pendingReq of pendingRequests) {
 			const postReq$ = this.http.request(pendingReq.method || "POST", pendingReq.url, {

@@ -22,6 +22,7 @@ export class Settings {
 		queryKey: ["allEventsData"],
 		queryFn: () => this.httpService.getAllEventsData(),
 		refetchOnWindowFocus: false,
+		retry: false,
 	}));
 
 	constructor(private httpService: HttpService) {}

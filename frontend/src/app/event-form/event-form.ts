@@ -18,7 +18,7 @@ import {
 } from "../button-selector/button-selector";
 import { ActivatedRoute } from "@angular/router";
 import { BIRTHDAY_SUFFIX } from "../config";
-import { offlineMode } from "../http-interceptor";
+import { offlineMode } from "../offline-mode";
 
 type StatusMessageType = "error" | "success" | "pending" | null;
 

@@ -11,7 +11,7 @@ import { CreateQueryResult, injectQuery } from "@tanstack/angular-query-experime
 import { HttpService } from "../http-service";
 import { Weather } from "../weather/weather";
 import { Title } from "@angular/platform-browser";
-import { offlineMode } from "../http-interceptor";
+import { offlineMode } from "../offline-mode";
 
 @Component({
 	selector: "app-dashboard",
@@ -68,11 +68,12 @@ export class Dashboard {
 		this.dashboardDataQuery = injectQuery(() => ({
 			queryKey: ["dashboardData"],
 			queryFn: () => {
-				if (this.initialized) {
+				if (offlineMode() || this.initialized) {
 					return httpService.getDashboardData(day, false)
 				}
 				return httpService.getDashboardData(day, true)
 			},
+			retry: false,
 			select: (data: DashboardData) => {
 				if (this.initialized && this.dashboardData) {
 					data.emails = [...this.dashboardData.emails];
